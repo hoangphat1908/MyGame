@@ -1,1 +1,0 @@
-start javaw -jar gdx-texturepacker.jar

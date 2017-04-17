@@ -1,0 +1,62 @@
+
+link_walk_and_slash.png
+size: 2048,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+link_slash_east
+  rotate: false
+  xy: 2, 52
+  size: 384, 48
+  orig: 384, 48
+  offset: 0, 0
+  index: -1
+link_slash_north
+  rotate: false
+  xy: 2, 2
+  size: 384, 48
+  orig: 384, 48
+  offset: 0, 0
+  index: -1
+link_slash_south
+  rotate: false
+  xy: 388, 52
+  size: 384, 48
+  orig: 384, 48
+  offset: 0, 0
+  index: -1
+link_slash_west
+  rotate: false
+  xy: 388, 2
+  size: 384, 48
+  orig: 384, 48
+  offset: 0, 0
+  index: -1
+link_walk_east
+  rotate: false
+  xy: 774, 52
+  size: 288, 48
+  orig: 288, 48
+  offset: 0, 0
+  index: -1
+link_walk_north
+  rotate: false
+  xy: 774, 2
+  size: 288, 48
+  orig: 288, 48
+  offset: 0, 0
+  index: -1
+link_walk_south
+  rotate: false
+  xy: 1064, 52
+  size: 288, 48
+  orig: 288, 48
+  offset: 0, 0
+  index: -1
+link_walk_west
+  rotate: false
+  xy: 1064, 2
+  size: 288, 48
+  orig: 288, 48
+  offset: 0, 0
+  index: -1
