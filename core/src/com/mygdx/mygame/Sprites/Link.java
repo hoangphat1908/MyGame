@@ -2,15 +2,10 @@ package com.mygdx.mygame.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -123,14 +118,14 @@ public class Link extends Sprite{
     public void update(float dt){
         //&& b2body.getLinearVelocity().x <= 2
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            b2body.setLinearVelocity(new Vector2(-1f, 0));
+            b2body.setLinearVelocity(new Vector2(-2f, 0));
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            b2body.setLinearVelocity(new Vector2(1f, 0));
+            b2body.setLinearVelocity(new Vector2(2f, 0));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
-            b2body.setLinearVelocity(new Vector2(0, 1f));
+            b2body.setLinearVelocity(new Vector2(0, 2f));
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
-            b2body.setLinearVelocity(new Vector2(0, -1f));
+            b2body.setLinearVelocity(new Vector2(0, -2f));
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
         if(sword!=null)
@@ -269,8 +264,10 @@ public class Link extends Sprite{
         shape.setRadius(11 / MyGame.PPM);
 
         fdef.filter.categoryBits = MyGame.LINK_BIT;
-        fdef.filter.maskBits = MyGame.DEFAULT_BIT
-                | MyGame.BUSH_BIT;
+        fdef.filter.maskBits = MyGame.BORDER_BIT |
+                MyGame.BUSH_BIT |
+                MyGame.ENEMY_BIT |
+                MyGame.OBSTACLE_BIT;
 
 
         fdef.shape = shape;

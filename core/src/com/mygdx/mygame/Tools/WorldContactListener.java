@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.mygame.MyGame;
+import com.mygdx.mygame.Sprites.Enemies.Enemy;
 import com.mygdx.mygame.Sprites.InteractiveTileObject;
 import com.mygdx.mygame.Sprites.Link;
 import com.mygdx.mygame.Weapons.Sword;
@@ -38,6 +39,14 @@ public class WorldContactListener implements ContactListener{
                     ((InteractiveTileObject) fixA.getUserData()).onSlash();
                 }
                 break;
+            case MyGame.ENEMY_BIT | MyGame.OBSTACLE_BIT:
+            case MyGame.ENEMY_BIT | MyGame.BORDER_BIT:
+                if(fixA.getFilterData().categoryBits == MyGame.ENEMY_BIT) {
+                    ((Enemy) fixA.getUserData()).reverseVelocity(false, true);
+                }
+                else {
+                    ((Enemy) fixB.getUserData()).reverseVelocity(false, true);
+                }
 
         }
 

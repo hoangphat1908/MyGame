@@ -2,6 +2,7 @@ package com.mygdx.mygame.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,6 +26,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Scenes.Hud;
+import com.mygdx.mygame.Sprites.Enemies.Armos;
+import com.mygdx.mygame.Sprites.Enemies.Enemy;
 import com.mygdx.mygame.Sprites.Link;
 import com.mygdx.mygame.Tools.B2WorldCreator;
 import com.mygdx.mygame.Tools.WorldContactListener;
@@ -48,11 +51,15 @@ public class PlayScreen implements Screen {
     //Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;
+
+    private B2WorldCreator creator;
     float spriteXposition;
     float spriteYposition;
     private Link player;
+
+
     public PlayScreen(MyGame game) {
-        atlas = new TextureAtlas("link_walk_and_slash.atlas");
+        atlas = new TextureAtlas("link_and_enemies.atlas");
 
         this.game = game;
 
@@ -71,10 +78,11 @@ public class PlayScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
 
-        new B2WorldCreator(this);
+        creator =new B2WorldCreator(this);
         player = new Link(this);
 
         world.setContactListener(new WorldContactListener());
+
     }
     public TextureAtlas getAtlas(){
         return atlas;
@@ -92,6 +100,8 @@ public class PlayScreen implements Screen {
 
         world.step(1/60f, 6, 2);
         player.update(dt);
+        for(Enemy enemy : creator.getKnights())
+            enemy.update(dt);
         gameCam.position.x = player.b2body.getPosition().x;
         gameCam.position.y = player.b2body.getPosition().y;
         gameCam.update();
@@ -109,6 +119,9 @@ public class PlayScreen implements Screen {
         b2dr.render(world, gameCam.combined);
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
+
+        for(Enemy enemy : creator.getKnights())
+            enemy.draw(game.batch);
         player.draw(game.batch);
         game.batch.end();
 

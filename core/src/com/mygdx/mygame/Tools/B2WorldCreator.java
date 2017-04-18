@@ -9,15 +9,18 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Screens.PlayScreen;
 import com.mygdx.mygame.Sprites.Bush;
+import com.mygdx.mygame.Sprites.Enemies.Armos;
 
 /**
  * Created by hoangphat1908 on 4/16/2017.
  */
 
 public class B2WorldCreator {
+    private Array<Armos> knights;
     public  B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
@@ -36,10 +39,11 @@ public class B2WorldCreator {
 
             shape.setAsBox((rect.getWidth() / 2)/MyGame.PPM, (rect.getHeight() / 2)/MyGame.PPM);
             fdef.shape = shape;
+            fdef.filter.categoryBits = MyGame.OBSTACLE_BIT;
             body.createFixture(fdef);
         }
         //Border Trees
-        for(MapObject object: map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object: map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
@@ -52,8 +56,19 @@ public class B2WorldCreator {
             body.createFixture(fdef);
         }
         //Bushes
-        for(MapObject object: map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object: map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
             new Bush(screen, object);
         }
+        //Armos Knights
+        knights = new Array<Armos>();
+        for(MapObject object: map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            knights.add(new Armos(screen, rect.getX()/MyGame.PPM, rect.getY()/MyGame.PPM));
+        }
+    }
+
+    public Array<Armos> getKnights() {
+        return knights;
     }
 }

@@ -3,12 +3,10 @@ package com.mygdx.mygame.Weapons;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.mygame.MyGame;
@@ -70,8 +68,10 @@ public class Sword extends Sprite {
         shape.setRadius(15 / MyGame.PPM);
 
         fdef.filter.categoryBits = MyGame.SWORD_BIT;
-        fdef.filter.maskBits = MyGame.BUSH_BIT
-                | MyGame.DEFAULT_BIT;
+        fdef.filter.maskBits = MyGame.BUSH_BIT |
+                MyGame.BORDER_BIT |
+                MyGame.OBSTACLE_BIT|
+                MyGame.ENEMY_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }

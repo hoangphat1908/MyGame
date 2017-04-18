@@ -1,62 +1,82 @@
 
-link_walk_and_slash.png
+link_and_enemies.png
 size: 2048,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-link_slash_east
+armos
   rotate: false
   xy: 2, 52
-  size: 384, 48
-  orig: 384, 48
+  size: 560, 56
+  orig: 560, 56
   offset: 0, 0
   index: -1
-link_slash_north
+link_slash_east
   rotate: false
   xy: 2, 2
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
+link_slash_north
+  rotate: false
+  xy: 564, 60
+  size: 384, 48
+  orig: 384, 48
+  offset: 0, 0
+  index: -1
 link_slash_south
   rotate: false
-  xy: 388, 52
+  xy: 950, 60
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_slash_west
   rotate: false
-  xy: 388, 2
+  xy: 1336, 60
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_walk_east
   rotate: false
-  xy: 774, 52
+  xy: 1722, 60
   size: 288, 48
   orig: 288, 48
   offset: 0, 0
   index: -1
 link_walk_north
   rotate: false
-  xy: 774, 2
+  xy: 564, 10
   size: 288, 48
   orig: 288, 48
   offset: 0, 0
   index: -1
 link_walk_south
   rotate: false
-  xy: 1064, 52
+  xy: 854, 10
   size: 288, 48
   orig: 288, 48
   offset: 0, 0
   index: -1
 link_walk_west
   rotate: false
-  xy: 1064, 2
+  xy: 1144, 10
   size: 288, 48
   orig: 288, 48
+  offset: 0, 0
+  index: -1
+
+link_and_enemies.png
+size: 1024,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Armos Knight/armos
+  rotate: false
+  xy: 2, 2
+  size: 560, 56
+  orig: 560, 56
   offset: 0, 0
   index: -1
