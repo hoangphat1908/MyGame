@@ -27,6 +27,7 @@ import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Scenes.Hud;
 import com.mygdx.mygame.Sprites.Link;
 import com.mygdx.mygame.Tools.B2WorldCreator;
+import com.mygdx.mygame.Tools.WorldContactListener;
 
 /**
  * Created by hoangphat1908 on 4/16/2017.
@@ -70,8 +71,10 @@ public class PlayScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
 
-        new B2WorldCreator(world, map);
-        player = new Link(world, this);
+        new B2WorldCreator(this);
+        player = new Link(this);
+
+        world.setContactListener(new WorldContactListener());
     }
     public TextureAtlas getAtlas(){
         return atlas;
@@ -118,6 +121,12 @@ public class PlayScreen implements Screen {
         gamePort.update(width, height);
     }
 
+    public TiledMap getMap(){
+        return  map;
+    }
+    public World getWorld(){
+        return world;
+    }
     @Override
     public void pause() {
 
