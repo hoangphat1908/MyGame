@@ -58,6 +58,7 @@ public class PlayScreen implements Screen {
     private Link player;
 
 
+
     public PlayScreen(MyGame game) {
         atlas = new TextureAtlas("link_and_enemies.atlas");
 
@@ -120,12 +121,15 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
 
-        for(Enemy enemy : creator.getKnights())
+        for(Enemy enemy : creator.getKnights()) {
             enemy.draw(game.batch);
+        }
+
         player.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.setHealth(player.getHealth());
         hud.stage.draw();
     }
 

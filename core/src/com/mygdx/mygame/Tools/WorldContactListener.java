@@ -47,6 +47,23 @@ public class WorldContactListener implements ContactListener{
                 else {
                     ((Enemy) fixB.getUserData()).reverseVelocity(false, true);
                 }
+                break;
+            case MyGame.SWORD_BIT | MyGame.ENEMY_BIT:
+                if(fixA.getFilterData().categoryBits == MyGame.SWORD_BIT) {
+                    ((Enemy) fixB.getUserData()).getHit(30);
+                }
+                else {
+                    ((Enemy) fixA.getUserData()).getHit(30);
+                }
+                break;
+            case MyGame.LINK_BIT | MyGame.ENEMY_BIT:
+                if(fixA.getFilterData().categoryBits == MyGame.LINK_BIT) {
+                    ((Link) fixA.getUserData()).getHit(30);
+                }
+                else {
+                    ((Link) fixB.getUserData()).getHit(30);
+                }
+                break;
 
         }
 

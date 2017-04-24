@@ -22,10 +22,11 @@ public class Hud implements Disposable{
 
     private Integer worldTimer;
     private  float timeCount;
-    private Integer score;
+    private Integer health;
+    private Integer maxHealth;
 
     Label countDownLabel;
-    Label scoreLabel;
+    Label healthLabel;
     Label timeLabel;
     Label levelLabel;
     Label mapLabel;
@@ -34,7 +35,8 @@ public class Hud implements Disposable{
     public Hud(SpriteBatch sb){
         worldTimer = 60;
         timeCount = 0;
-        score = 0;
+        health = 200;
+        maxHealth = 200;
 
         viewport = new FitViewport(MyGame.V_WIDTH, MyGame.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -43,7 +45,7 @@ public class Hud implements Disposable{
         table.top();
         table.setFillParent(true);
         countDownLabel = new Label(String.format("%02d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        scoreLabel = new Label(String.format("%04d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        healthLabel = new Label(String.format("%03d/%03d", health, maxHealth), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         mapLabel = new Label("MAP", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -52,7 +54,7 @@ public class Hud implements Disposable{
         table.add(mapLabel).expandX();
         table.add(timeLabel).expandX();
         table.row();
-        table.add(scoreLabel).expandX();
+        table.add(healthLabel).expandX();
         table.add(levelLabel).expandX();
         table.add(countDownLabel).expandX();
         stage.addActor(table);
@@ -62,5 +64,13 @@ public class Hud implements Disposable{
     @Override
     public void dispose() {
         stage.dispose();
+    }
+    public void setMaxHealth(int maxHealth){
+        this.maxHealth = maxHealth;
+        healthLabel.setText(String.format("%03d/%03d", health, maxHealth));
+    }
+    public void setHealth(int health){
+        this.health = health;
+        healthLabel.setText(String.format("%03d/%03d", health, maxHealth));
     }
 }

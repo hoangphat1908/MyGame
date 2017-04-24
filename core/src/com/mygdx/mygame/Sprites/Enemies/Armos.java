@@ -1,6 +1,7 @@
 package com.mygdx.mygame.Sprites.Enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import com.badlogic.gdx.math.Vector2;
@@ -18,24 +19,47 @@ import com.mygdx.mygame.Screens.PlayScreen;
 public class Armos extends Enemy{
     private float stateTime;
     private Animation<TextureRegion> walkAnimation;
+    private Animation<TextureRegion> deathAnimation;
     private Array<TextureRegion> frames;
+    private boolean setToDestroy;
+    private boolean destroyed;
+    private float deathTimer;
     public Armos(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         frames = new Array<TextureRegion>();
         for(int i = 0; i < 10; i++)
             frames.add(new TextureRegion(screen.getAtlas().findRegion("armos"), i*56, 0, 56, 56));
         walkAnimation= new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+        for(int i = 10; i < 13; i++)
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("armos"), i*56, 0, 56, 56));
+        deathAnimation= new Animation<TextureRegion>(0.2f, frames);
         stateTime = 0;
+
         setBounds(getX(), getY(), 56/MyGame.PPM, 56/MyGame.PPM);
+        setToDestroy = false;
+        destroyed = false;
+        deathTimer = -1/60f;
     }
 
     @Override
     public void update(float dt){
         stateTime +=dt;
-        b2body.setLinearVelocity(velocity);
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        setRegion(walkAnimation.getKeyFrame(stateTime, true));
+        if(setToDestroy && !destroyed&&deathTimer > 0.4f){
+            world.destroyBody(b2body);
+            destroyed = true;
+            stateTime = 0;
+        }
+        if(setToDestroy && !destroyed){
+            deathTimer+=dt;
+            setRegion(deathAnimation.getKeyFrame(deathTimer, false));
+        }
+        else if(!setToDestroy) {
 
+            b2body.setLinearVelocity(velocity);
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+            setRegion(walkAnimation.getKeyFrame(stateTime, true));
+        }
     }
     @Override
     protected void defineEnemy() {
@@ -58,5 +82,17 @@ public class Armos extends Enemy{
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
+    }
+    public void draw(Batch batch){
+        if(!destroyed || stateTime < 1)
+            super.draw(batch);
+    }
+    public void getHit(int damage){
+        if(health > damage)
+            health-=damage;
+        else{
+            health = 0;
+            setToDestroy = true;
+        }
     }
 }

@@ -2,7 +2,10 @@ package com.mygdx.mygame.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -48,6 +51,9 @@ public class Link extends Sprite{
     private boolean walkingEast;
     private PlayScreen screen;
     private Sword sword;
+    private int health;
+    private int maxHealth;
+    private Texture blank;
     public Link(PlayScreen screen){
         this.screen = screen;
         this.world = screen.getWorld();
@@ -112,7 +118,9 @@ public class Link extends Sprite{
         currentRegion = linkStandNorth;
         setBounds(0, 0, 48 / MyGame.PPM, 48 / MyGame.PPM);
         setRegion(linkStandNorth);
-
+        maxHealth = 200;
+        health = 200;
+        blank = new Texture("blank.png");
 
     }
     public void update(float dt){
@@ -283,6 +291,22 @@ public class Link extends Sprite{
     public void slash(int direction){
         sword = new Sword(screen, b2body.getPosition().x, b2body.getPosition().y, direction);
 
+    }
+    public void getHit(int damage){
+        if(health > damage)
+            health-=damage;
+        else{
+            health = 0;
+        }
+    }
+    public int getHealth(){
+        return health;
+    }
+    public int getMaxHealth(){
+        return maxHealth;
+    }
+    public void draw(Batch batch){
+            super.draw(batch);
     }
 
 

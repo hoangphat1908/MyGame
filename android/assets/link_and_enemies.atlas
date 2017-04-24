@@ -7,8 +7,8 @@ repeat: none
 armos
   rotate: false
   xy: 2, 52
-  size: 560, 56
-  orig: 560, 56
+  size: 728, 56
+  orig: 728, 56
   offset: 0, 0
   index: -1
 link_slash_east
@@ -20,63 +20,50 @@ link_slash_east
   index: -1
 link_slash_north
   rotate: false
-  xy: 564, 60
+  xy: 732, 60
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_slash_south
   rotate: false
-  xy: 950, 60
+  xy: 1118, 60
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_slash_west
   rotate: false
-  xy: 1336, 60
+  xy: 1504, 60
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_walk_east
   rotate: false
-  xy: 1722, 60
+  xy: 388, 2
   size: 288, 48
   orig: 288, 48
   offset: 0, 0
   index: -1
 link_walk_north
   rotate: false
-  xy: 564, 10
+  xy: 732, 10
   size: 288, 48
   orig: 288, 48
   offset: 0, 0
   index: -1
 link_walk_south
   rotate: false
-  xy: 854, 10
+  xy: 1022, 10
   size: 288, 48
   orig: 288, 48
   offset: 0, 0
   index: -1
 link_walk_west
   rotate: false
-  xy: 1144, 10
+  xy: 1312, 10
   size: 288, 48
   orig: 288, 48
-  offset: 0, 0
-  index: -1
-
-link_and_enemies.png
-size: 1024,64
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-Armos Knight/armos
-  rotate: false
-  xy: 2, 2
-  size: 560, 56
-  orig: 560, 56
   offset: 0, 0
   index: -1
