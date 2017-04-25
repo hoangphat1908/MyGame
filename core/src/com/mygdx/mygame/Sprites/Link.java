@@ -40,6 +40,10 @@ public class Link extends Sprite{
     private TextureRegion linkStandEast;
     private TextureRegion linkStandSouth;
     private TextureRegion linkStandWest;
+    private TextureRegion linkPushNorth;
+    private TextureRegion linkPushEast;
+    private TextureRegion linkPushSouth;
+    private TextureRegion linkPushWest;
     private Animation<TextureRegion> linkWalkNorth;
     private Animation<TextureRegion> linkWalkEast;
     private Animation<TextureRegion> linkWalkSouth;
@@ -119,6 +123,12 @@ public class Link extends Sprite{
         linkStandEast = new TextureRegion(screen.getAtlas().findRegion("link_slash_east"), 0, 0, 48, 48);
         linkStandSouth = new TextureRegion(screen.getAtlas().findRegion("link_slash_south"), 0, 0, 48, 48);
         linkStandWest = new TextureRegion(screen.getAtlas().findRegion("link_slash_west"), 0, 0, 48, 48);
+
+        linkPushNorth = new TextureRegion(screen.getAtlas().findRegion("link_walk_north"), 6*48, 0, 48, 48);
+        linkPushEast = new TextureRegion(screen.getAtlas().findRegion("link_walk_east"), 6*48, 0, 48, 48);
+        linkPushSouth = new TextureRegion(screen.getAtlas().findRegion("link_walk_south"), 6*48, 0, 48, 48);
+        linkPushWest = new TextureRegion(screen.getAtlas().findRegion("link_walk_west"), 6*48, 0, 48, 48);
+
         currentRegion = linkStandNorth;
         setBounds(0, 0, 48 / MyGame.PPM, 48 / MyGame.PPM);
         setRegion(linkStandNorth);
@@ -130,23 +140,35 @@ public class Link extends Sprite{
     }
     public void update(float dt){
         //&& b2body.getLinearVelocity().x <= 2
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            b2body.setLinearVelocity(new Vector2(-2f, 0));
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            b2body.setLinearVelocity(new Vector2(2f, 0));
+        if(!isHit||invTimer>1) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+                b2body.setLinearVelocity(new Vector2(-2f, 0));
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                b2body.setLinearVelocity(new Vector2(2f, 0));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP))
+                b2body.setLinearVelocity(new Vector2(0, 2f));
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+                b2body.setLinearVelocity(new Vector2(0, -2f));
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP))
-            b2body.setLinearVelocity(new Vector2(0, 2f));
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
-            b2body.setLinearVelocity(new Vector2(0, -2f));
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
 
         if(isHit){
             setCategoryFilter(MyGame.INVINCIBILITY_BIT);
-            Gdx.app.log("time",invTimer+"");
-            Gdx.app.log("state", isHit+"");
+            //Gdx.app.log("time",invTimer+"");
+            //Gdx.app.log("state", isHit+"");
             invTimer+=dt;
+            if(invTimer<.6) {
+                if (b2body.getLinearVelocity().x > 0)
+                    setRegion(linkPushWest);
+                else if (b2body.getLinearVelocity().x < 0)
+                    setRegion(linkPushEast);
+                else if (b2body.getLinearVelocity().y > 0)
+                    setRegion(linkPushSouth);
+                else
+                    setRegion(linkPushNorth);
+            }
             if(invTimer > 2.0) {
                 isHit = false;
                 setCategoryFilter(MyGame.LINK_BIT);
@@ -244,42 +266,37 @@ public class Link extends Sprite{
         return region;
     }
     public State getState(){
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && currentState!=State.SLASHING_NORTH&& currentState!=State.SLASHING_EAST&& currentState!=State.SLASHING_SOUTH&& currentState!=State.SLASHING_WEST) {
-            if (currentState == State.STANDING_NORTH||currentState == State.WALKING_NORTH){
-                slash(0);
-                return State.SLASHING_NORTH;
-            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && currentState != State.SLASHING_NORTH && currentState != State.SLASHING_EAST && currentState != State.SLASHING_SOUTH && currentState != State.SLASHING_WEST) {
+                if (currentState == State.STANDING_NORTH || currentState == State.WALKING_NORTH) {
+                    slash(0);
+                    return State.SLASHING_NORTH;
+                } else if (currentState == State.STANDING_EAST || currentState == State.WALKING_EAST) {
+                    slash(1);
+                    return State.SLASHING_EAST;
+                } else if (currentState == State.STANDING_SOUTH || currentState == State.WALKING_SOUTH) {
+                    slash(2);
+                    return State.SLASHING_SOUTH;
+                } else {
+                    slash(3);
+                    return State.SLASHING_WEST;
+                }
+            } else if (b2body.getLinearVelocity().y > 0 && currentState != State.SLASHING_NORTH)
+                return State.WALKING_NORTH;
+            else if (b2body.getLinearVelocity().x > 0 && currentState != State.SLASHING_EAST)
+                return State.WALKING_EAST;
+            else if (b2body.getLinearVelocity().y < 0 && currentState != State.SLASHING_SOUTH)
+                return State.WALKING_SOUTH;
+            else if (b2body.getLinearVelocity().x < 0 && currentState != State.SLASHING_WEST)
+                return State.WALKING_WEST;
 
-            else if (currentState == State.STANDING_EAST||currentState == State.WALKING_EAST) {
-                slash(1);
-                return State.SLASHING_EAST;
-            }
-            else if (currentState == State.STANDING_SOUTH||currentState == State.WALKING_SOUTH) {
-                slash(2);
-                return State.SLASHING_SOUTH;
-            }
-            else {
-                slash(3);
-                return State.SLASHING_WEST;
-            }
-        }
-        else if(b2body.getLinearVelocity().y > 0&&currentState != State.SLASHING_NORTH)
-            return State.WALKING_NORTH;
-        else if(b2body.getLinearVelocity().x > 0&&currentState != State.SLASHING_EAST)
-            return State.WALKING_EAST;
-        else if(b2body.getLinearVelocity().y < 0&&currentState != State.SLASHING_SOUTH)
-            return State.WALKING_SOUTH;
-        else if(b2body.getLinearVelocity().x < 0&&currentState != State.SLASHING_WEST)
-            return State.WALKING_WEST;
-        else if (previousState == State.WALKING_NORTH)
-            return State.STANDING_NORTH;
-        else if (previousState == State.WALKING_EAST)
-            return State.STANDING_EAST;
-        else if (previousState == State.WALKING_SOUTH)
-            return State.STANDING_SOUTH;
-        else if (previousState == State.WALKING_WEST)
-            return State.STANDING_WEST;
-
+            else if (previousState == State.WALKING_NORTH)
+                return State.STANDING_NORTH;
+            else if (previousState == State.WALKING_EAST)
+                return State.STANDING_EAST;
+            else if (previousState == State.WALKING_SOUTH)
+                return State.STANDING_SOUTH;
+            else if(previousState == State.WALKING_WEST)
+                return State.STANDING_WEST;
         else
             return previousState;
 
@@ -317,7 +334,11 @@ public class Link extends Sprite{
     }
     public void getHit(int damage, Vector2 eVelocity){
         isHit = true;
-        b2body.applyLinearImpulse(new Vector2(eVelocity.x, 10*eVelocity.y), b2body.getWorldCenter(), true);
+        float xUnit = eVelocity.x !=0 ?eVelocity.x / Math.abs(eVelocity.x) : 0;
+        float yUnit = eVelocity.y !=0 ?eVelocity.y / Math.abs(eVelocity.y) : 0;
+        Gdx.app.log(xUnit+"", yUnit+"");
+        b2body.setLinearVelocity(0,0);
+        b2body.setLinearVelocity(xUnit*20, yUnit*20);
         if(health > damage)
             health-=damage;
         else{

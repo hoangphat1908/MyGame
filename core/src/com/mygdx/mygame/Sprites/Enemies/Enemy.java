@@ -28,7 +28,7 @@ public abstract class Enemy extends Sprite{
         this.screen = screen;
         setPosition(x, y);
         defineEnemy();
-        velocity = new Vector2(0, -1);
+        velocity = new Vector2(0,-1);
         maxHealth = 100;
         health = 100;
         blank = new Texture("blank.png");

@@ -42,28 +42,28 @@ link_slash_west
 link_walk_east
   rotate: false
   xy: 388, 2
-  size: 288, 48
-  orig: 288, 48
+  size: 336, 48
+  orig: 336, 48
   offset: 0, 0
   index: -1
 link_walk_north
   rotate: false
   xy: 732, 10
-  size: 288, 48
-  orig: 288, 48
+  size: 336, 48
+  orig: 336, 48
   offset: 0, 0
   index: -1
 link_walk_south
   rotate: false
-  xy: 1022, 10
-  size: 288, 48
-  orig: 288, 48
+  xy: 1070, 10
+  size: 336, 48
+  orig: 336, 48
   offset: 0, 0
   index: -1
 link_walk_west
   rotate: false
-  xy: 1312, 10
-  size: 288, 48
-  orig: 288, 48
+  xy: 1408, 10
+  size: 336, 48
+  orig: 336, 48
   offset: 0, 0
   index: -1
