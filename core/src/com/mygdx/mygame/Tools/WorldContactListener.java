@@ -22,14 +22,11 @@ public class WorldContactListener implements ContactListener{
 
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
-        Gdx.app.log("A",fixA.getFilterData().categoryBits+"");
-        Gdx.app.log("B", fixB.getFilterData().categoryBits+"");
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
         switch (cDef){
 
 
             case MyGame.SWORD_BIT | MyGame.BUSH_BIT:
-                Gdx.app.log("fsdfdsf","");
                 if(fixA.getFilterData().categoryBits == MyGame.SWORD_BIT) {
                     ((Sword) fixA.getUserData()).setToDestroy();
                     ((InteractiveTileObject) fixB.getUserData()).onSlash();
@@ -58,10 +55,10 @@ public class WorldContactListener implements ContactListener{
                 break;
             case MyGame.LINK_BIT | MyGame.ENEMY_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.LINK_BIT) {
-                    ((Link) fixA.getUserData()).getHit(30);
+                    ((Link) fixA.getUserData()).getHit(30, ((Enemy)fixB.getUserData()).velocity);
                 }
                 else {
-                    ((Link) fixB.getUserData()).getHit(30);
+                    ((Link) fixB.getUserData()).getHit(30, ((Enemy)fixA.getUserData()).velocity);
                 }
                 break;
 

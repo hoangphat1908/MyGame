@@ -120,12 +120,12 @@ public class PlayScreen implements Screen {
         b2dr.render(world, gameCam.combined);
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
-
+        player.draw(game.batch);
         for(Enemy enemy : creator.getKnights()) {
             enemy.draw(game.batch);
         }
 
-        player.draw(game.batch);
+
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

@@ -14,6 +14,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -54,6 +56,8 @@ public class Link extends Sprite{
     private int health;
     private int maxHealth;
     private Texture blank;
+    private boolean isHit;
+    private float invTimer;
     public Link(PlayScreen screen){
         this.screen = screen;
         this.world = screen.getWorld();
@@ -121,7 +125,8 @@ public class Link extends Sprite{
         maxHealth = 200;
         health = 200;
         blank = new Texture("blank.png");
-
+        isHit = false;
+        invTimer = 0;
     }
     public void update(float dt){
         //&& b2body.getLinearVelocity().x <= 2
@@ -136,13 +141,28 @@ public class Link extends Sprite{
             b2body.setLinearVelocity(new Vector2(0, -2f));
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
+
+        if(isHit){
+            setCategoryFilter(MyGame.INVINCIBILITY_BIT);
+            Gdx.app.log("time",invTimer+"");
+            Gdx.app.log("state", isHit+"");
+            invTimer+=dt;
+            if(invTimer > 2.0) {
+                isHit = false;
+                setCategoryFilter(MyGame.LINK_BIT);
+                currentState = State.STANDING_WEST;
+                previousState = State.STANDING_WEST;
+                invTimer = 0;
+            }
+        }
+
         if(sword!=null)
             sword.update(dt);
 
     }
     public TextureRegion getFrame(float dt){
         currentState = getState();
-        TextureRegion region;
+        TextureRegion region = currentRegion;
         switch (currentState){
             case WALKING_NORTH:
                 region = linkWalkNorth.getKeyFrame(stateTimer, true);
@@ -195,6 +215,7 @@ public class Link extends Sprite{
 
 
         switch (currentState) {
+
             case SLASHING_NORTH:
                 if(linkSlashNorth.isAnimationFinished(stateTimer))
                     currentState = State.STANDING_NORTH;
@@ -211,12 +232,13 @@ public class Link extends Sprite{
                 if(linkSlashWest.isAnimationFinished(stateTimer))
                     currentState = State.STANDING_WEST;
                 break;
+
             default:
                 break;
         }
 
 
-        previousState = currentState;
+        previousState = currentState ;
 
         currentRegion = region;
         return region;
@@ -257,6 +279,7 @@ public class Link extends Sprite{
             return State.STANDING_SOUTH;
         else if (previousState == State.WALKING_WEST)
             return State.STANDING_WEST;
+
         else
             return previousState;
 
@@ -292,12 +315,15 @@ public class Link extends Sprite{
         sword = new Sword(screen, b2body.getPosition().x, b2body.getPosition().y, direction);
 
     }
-    public void getHit(int damage){
+    public void getHit(int damage, Vector2 eVelocity){
+        isHit = true;
+        b2body.applyLinearImpulse(new Vector2(eVelocity.x, 10*eVelocity.y), b2body.getWorldCenter(), true);
         if(health > damage)
             health-=damage;
         else{
             health = 0;
         }
+
     }
     public int getHealth(){
         return health;
@@ -309,5 +335,21 @@ public class Link extends Sprite{
             super.draw(batch);
     }
 
+    public void setCategoryFilter(short categoryBit){
+        Filter filter = new Filter();
+        filter.categoryBits = categoryBit;
+        if(categoryBit == MyGame.INVINCIBILITY_BIT)
+            filter.maskBits = MyGame.BORDER_BIT |
+                    MyGame.BUSH_BIT |
+                    MyGame.OBSTACLE_BIT;
+        else
+            filter.maskBits = MyGame.BORDER_BIT |
+                    MyGame.BUSH_BIT |
+                    MyGame.ENEMY_BIT|
+                    MyGame.OBSTACLE_BIT;
+        for(Fixture fixture : b2body.getFixtureList()){
+            fixture.setFilterData(filter);
+        }
+    }
 
 }

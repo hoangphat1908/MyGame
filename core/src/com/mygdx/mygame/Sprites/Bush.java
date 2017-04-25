@@ -28,6 +28,6 @@ public class Bush extends  InteractiveTileObject {
     public void onSlash() {
         Gdx.app.log("Bush","Collision");
         setCategoryFilter(MyGame.DESTROYED_BIT);
-        deleteCells(4, 4);
+        deleteCells();
     }
 }

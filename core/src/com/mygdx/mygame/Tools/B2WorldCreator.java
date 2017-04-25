@@ -14,6 +14,7 @@ import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Screens.PlayScreen;
 import com.mygdx.mygame.Sprites.Bush;
 import com.mygdx.mygame.Sprites.Enemies.Armos;
+import com.mygdx.mygame.Sprites.Obstacle;
 
 /**
  * Created by hoangphat1908 on 4/16/2017.
@@ -30,17 +31,7 @@ public class B2WorldCreator {
         Body body;
         //Obstacle
         for(MapObject object: map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / MyGame.PPM, (rect.getY() + rect.getHeight() / 2) / MyGame.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox((rect.getWidth() / 2)/MyGame.PPM, (rect.getHeight() / 2)/MyGame.PPM);
-            fdef.shape = shape;
-            fdef.filter.categoryBits = MyGame.OBSTACLE_BIT;
-            body.createFixture(fdef);
+            new Obstacle(screen, object);
         }
         //Border Trees
         for(MapObject object: map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){

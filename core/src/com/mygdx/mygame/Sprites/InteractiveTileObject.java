@@ -31,7 +31,6 @@ public abstract class InteractiveTileObject {
     protected Fixture fixture;
     protected PlayScreen screen;
     protected MapObject object;
-
     public InteractiveTileObject(PlayScreen screen, MapObject object){
         this.object = object;
         this.screen = screen;
@@ -47,7 +46,7 @@ public abstract class InteractiveTileObject {
         bdef.position.set((bounds.getX()+bounds.getWidth() /2) / MyGame.PPM, (bounds.getY() + bounds.getHeight() / 2) / MyGame.PPM);
         body = world.createBody(bdef);
 
-        shape.setAsBox((bounds.getWidth()/4)/MyGame.PPM, (bounds.getHeight()/4)/MyGame.PPM);
+        shape.setAsBox((bounds.getWidth()/2)/MyGame.PPM, (bounds.getHeight()/2)/MyGame.PPM);
         fdef.shape = shape;
         fixture = body.createFixture(fdef);
     }
@@ -58,19 +57,17 @@ public abstract class InteractiveTileObject {
         filter.categoryBits = filterBit;
         fixture.setFilterData(filter);
     }
-    public TiledMapTileLayer.Cell getCell() {
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
 
-        return layer.getCell((int) (body.getPosition().x * MyGame.PPM / 8-2),
-                (int) (body.getPosition().y * MyGame.PPM / 8-2));
-    }
-    public void deleteCells(int width, int height){
+    public void deleteCells(){
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
-        int positionX = (int) (body.getPosition().x * MyGame.PPM / 8-2);
-        int positionY = (int) (body.getPosition().y * MyGame.PPM / 8-2);
-        for(int i = 0; i < width; i++)
-            for(int j = 0; j < height; j++)
-                layer.getCell(positionX+i, positionY+j).setTile(null);
+        int tileX = (int)bounds.getX()/8;
+        int tileY = (int)bounds.getY()/8;
+        int tileWidth = (int)bounds.getWidth()/8;
+        int tileHeight = (int)bounds.getHeight()/8;
+        for(int i = 0; i < tileWidth; i++)
+            for(int j = 0; j < tileHeight; j++)
+                layer.getCell(tileX+i, tileY+j).setTile(null);
+
     }
 
 
