@@ -320,13 +320,6 @@ public class Link extends Sprite{
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
-
-        EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-7/MyGame.PPM, 7 / MyGame.PPM), new Vector2( 7 / MyGame.PPM, 7 / MyGame.PPM));
-        fdef.filter.categoryBits = MyGame.LINK_HEAD_BIT;
-        fdef.shape = head;
-        fdef.isSensor = true;
-        b2body.createFixture(fdef).setUserData(this);
     }
     public void slash(int direction){
         sword = new Sword(screen, b2body.getPosition().x, b2body.getPosition().y, direction);

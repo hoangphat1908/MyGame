@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -24,8 +25,18 @@ public class Armos extends Enemy{
     private boolean setToDestroy;
     private boolean destroyed;
     private float deathTimer;
-    public Armos(PlayScreen screen, float x, float y) {
-        super(screen, x, y);
+    public Armos(PlayScreen screen, MapObject object) {
+        super(screen, object);
+        if(object.getProperties().containsKey("moving_north"))
+            velocity = new Vector2(0,1);
+        else if(object.getProperties().containsKey("moving_east"))
+            velocity = new Vector2(1,0);
+        else if(object.getProperties().containsKey("moving_south"))
+            velocity = new Vector2(0,-1);
+        else velocity = new Vector2(0,1);
+
+        maxHealth = 100;
+        health = 100;
         frames = new Array<TextureRegion>();
         for(int i = 0; i < 10; i++)
             frames.add(new TextureRegion(screen.getAtlas().findRegion("armos"), i*56, 0, 56, 56));
@@ -46,11 +57,12 @@ public class Armos extends Enemy{
     public void update(float dt){
         stateTime +=dt;
         if(setToDestroy && !destroyed&&deathTimer > 0.4f){
-            world.destroyBody(b2body);
+
             destroyed = true;
             stateTime = 0;
         }
         if(setToDestroy && !destroyed){
+            world.destroyBody(b2body);
             deathTimer+=dt;
             setRegion(deathAnimation.getKeyFrame(deathTimer, false));
         }
@@ -70,7 +82,7 @@ public class Armos extends Enemy{
         b2body.setLinearDamping(30.0f);
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(22 / MyGame.PPM);
+        shape.setRadius(20 / MyGame.PPM);
         fdef.filter.categoryBits = MyGame.ENEMY_BIT;
         fdef.filter.maskBits = MyGame.BORDER_BIT |
                 MyGame.BUSH_BIT|

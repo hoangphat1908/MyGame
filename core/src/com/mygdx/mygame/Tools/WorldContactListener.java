@@ -37,12 +37,14 @@ public class WorldContactListener implements ContactListener{
                 }
                 break;
             case MyGame.ENEMY_BIT | MyGame.OBSTACLE_BIT:
+            case MyGame.ENEMY_BIT | MyGame.ENEMY_BIT:
+            case MyGame.ENEMY_BIT | MyGame.BUSH_BIT:
             case MyGame.ENEMY_BIT | MyGame.BORDER_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.ENEMY_BIT) {
-                    ((Enemy) fixA.getUserData()).reverseVelocity(false, true);
+                    ((Enemy) fixA.getUserData()).reverseVelocity(true, true);
                 }
                 else {
-                    ((Enemy) fixB.getUserData()).reverseVelocity(false, true);
+                    ((Enemy) fixB.getUserData()).reverseVelocity(true, true);
                 }
                 break;
             case MyGame.SWORD_BIT | MyGame.ENEMY_BIT:

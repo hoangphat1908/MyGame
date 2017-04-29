@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -20,17 +23,18 @@ public abstract class Enemy extends Sprite{
     protected PlayScreen screen;
     public Body b2body;
     public Vector2 velocity;
+    protected MapObject object;
     protected int maxHealth;
     protected int health;
     private Texture blank;
-    public Enemy(PlayScreen screen, float x, float y){
+    public Enemy(PlayScreen screen, MapObject object){
         this.world = screen.getWorld();
         this.screen = screen;
-        setPosition(x, y);
+        this.object = object;
+        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+        setPosition(rect.getX()/MyGame.PPM, rect.getY()/MyGame.PPM);
         defineEnemy();
-        velocity = new Vector2(0,-1);
-        maxHealth = 100;
-        health = 100;
+
         blank = new Texture("blank.png");
     }
     public abstract void update(float dt);

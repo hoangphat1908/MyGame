@@ -6,63 +6,77 @@ filter: Nearest,Nearest
 repeat: none
 armos
   rotate: false
-  xy: 2, 52
+  xy: 2, 70
   size: 728, 56
   orig: 728, 56
   offset: 0, 0
   index: -1
-link_slash_east
+arrow
   rotate: false
   xy: 2, 2
+  size: 64, 16
+  orig: 64, 16
+  offset: 0, 0
+  index: -1
+arrow_trap
+  rotate: false
+  xy: 1746, 28
+  size: 192, 48
+  orig: 192, 48
+  offset: 0, 0
+  index: -1
+link_slash_east
+  rotate: false
+  xy: 2, 20
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_slash_north
   rotate: false
-  xy: 732, 60
+  xy: 732, 78
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_slash_south
   rotate: false
-  xy: 1118, 60
+  xy: 1118, 78
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_slash_west
   rotate: false
-  xy: 1504, 60
+  xy: 1504, 78
   size: 384, 48
   orig: 384, 48
   offset: 0, 0
   index: -1
 link_walk_east
   rotate: false
-  xy: 388, 2
+  xy: 388, 20
   size: 336, 48
   orig: 336, 48
   offset: 0, 0
   index: -1
 link_walk_north
   rotate: false
-  xy: 732, 10
+  xy: 732, 28
   size: 336, 48
   orig: 336, 48
   offset: 0, 0
   index: -1
 link_walk_south
   rotate: false
-  xy: 1070, 10
+  xy: 1070, 28
   size: 336, 48
   orig: 336, 48
   offset: 0, 0
   index: -1
 link_walk_west
   rotate: false
-  xy: 1408, 10
+  xy: 1408, 28
   size: 336, 48
   orig: 336, 48
   offset: 0, 0

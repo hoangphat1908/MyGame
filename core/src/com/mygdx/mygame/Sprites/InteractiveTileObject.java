@@ -46,7 +46,7 @@ public abstract class InteractiveTileObject {
         bdef.position.set((bounds.getX()+bounds.getWidth() /2) / MyGame.PPM, (bounds.getY() + bounds.getHeight() / 2) / MyGame.PPM);
         body = world.createBody(bdef);
 
-        shape.setAsBox((bounds.getWidth()/2)/MyGame.PPM, (bounds.getHeight()/2)/MyGame.PPM);
+        shape.setAsBox((bounds.getWidth()/4)/MyGame.PPM, (bounds.getHeight()/4)/MyGame.PPM);
         fdef.shape = shape;
         fixture = body.createFixture(fdef);
     }

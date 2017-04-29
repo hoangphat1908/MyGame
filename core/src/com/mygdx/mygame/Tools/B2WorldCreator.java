@@ -31,7 +31,16 @@ public class B2WorldCreator {
         Body body;
         //Obstacle
         for(MapObject object: map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
-            new Obstacle(screen, object);
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / MyGame.PPM, (rect.getY() + rect.getHeight() / 2) / MyGame.PPM);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox((rect.getWidth() / 2)/MyGame.PPM, (rect.getHeight() / 2)/MyGame.PPM);
+            fdef.shape = shape;
+            body.createFixture(fdef);
         }
         //Border Trees
         for(MapObject object: map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
@@ -55,7 +64,7 @@ public class B2WorldCreator {
         for(MapObject object: map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            knights.add(new Armos(screen, rect.getX()/MyGame.PPM, rect.getY()/MyGame.PPM));
+            knights.add(new Armos(screen, object));
         }
     }
 
