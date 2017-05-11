@@ -33,19 +33,15 @@ public abstract class Enemy extends Sprite{
         this.object = object;
         Rectangle rect = ((RectangleMapObject) object).getRectangle();
         setPosition(rect.getX()/MyGame.PPM, rect.getY()/MyGame.PPM);
-        defineEnemy();
+
 
         blank = new Texture("blank.png");
     }
     public abstract void update(float dt);
     protected abstract void defineEnemy();
-    public void reverseVelocity(boolean x, boolean y){
-        if(x)
-            velocity.x = -velocity.x;
-        if(y)
-            velocity.y = -velocity.y;
-    }
+    public abstract void reverseVelocity(boolean x, boolean y);
     public abstract void getHit(int damage);
+    public abstract boolean isDestroyed();
     public int getHealth(){
         return health;
     }

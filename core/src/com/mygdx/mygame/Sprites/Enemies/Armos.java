@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Screens.PlayScreen;
 
+import java.util.Random;
+
 /**
  * Created by hoangphat1908 on 4/18/2017.
  */
@@ -33,8 +35,7 @@ public class Armos extends Enemy{
             velocity = new Vector2(1,0);
         else if(object.getProperties().containsKey("moving_south"))
             velocity = new Vector2(0,-1);
-        else velocity = new Vector2(0,1);
-
+        else velocity = new Vector2(-1,0);
         maxHealth = 100;
         health = 100;
         frames = new Array<TextureRegion>();
@@ -51,23 +52,27 @@ public class Armos extends Enemy{
         setToDestroy = false;
         destroyed = false;
         deathTimer = -1/60f;
+        defineEnemy();
     }
 
     @Override
     public void update(float dt){
         stateTime +=dt;
-        if(setToDestroy && !destroyed&&deathTimer > 0.4f){
+
+        if(setToDestroy && deathTimer > 0.4f){
 
             destroyed = true;
             stateTime = 0;
         }
         if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
+            b2body = null;
             deathTimer+=dt;
             setRegion(deathAnimation.getKeyFrame(deathTimer, false));
         }
         else if(!setToDestroy) {
-
+            if(b2body.getLinearVelocity().x==0 && b2body.getLinearVelocity().y==0)
+                reverseVelocity(true, true);
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
@@ -89,7 +94,9 @@ public class Armos extends Enemy{
                 MyGame.ENEMY_BIT|
                 MyGame.OBSTACLE_BIT|
                 MyGame.LINK_BIT|
-                MyGame.SWORD_BIT;
+                MyGame.SWORD_BIT|
+                MyGame.ARROW_BIT|
+                MyGame.TOWER_VISION_BIT;
 
 
         fdef.shape = shape;
@@ -106,5 +113,14 @@ public class Armos extends Enemy{
             health = 0;
             setToDestroy = true;
         }
+    }
+    public void reverseVelocity(boolean x, boolean y){
+        if(x)
+            velocity.x = -velocity.x;
+        if(y)
+            velocity.y = -velocity.y;
+    }
+    public boolean isDestroyed(){
+        return b2body==null;
     }
 }

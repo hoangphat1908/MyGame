@@ -19,8 +19,6 @@ import com.mygdx.mygame.Screens.PlayScreen;
 public class Sword extends Sprite {
     PlayScreen screen;
     World world;
-    Array<TextureRegion> frames;
-    Animation<TextureRegion> fireAnimation;
     float stateTime;
     boolean destroyed;
     boolean setToDestroy;
@@ -42,7 +40,7 @@ public class Sword extends Sprite {
                 swordX =-3;
                 swordY =8;
                 break;
-            case 1://
+            case 1:
                 swordX =8;
                 swordY =-3;
                 break;
@@ -50,7 +48,7 @@ public class Sword extends Sprite {
                 swordX =3;
                 swordY =-8;
                 break;
-            case 3://
+            case 3:
             default:
                 swordX =-8;
                 swordY =-3;
@@ -80,6 +78,7 @@ public class Sword extends Sprite {
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         if((stateTime > .1 || setToDestroy) && !destroyed) {
             world.destroyBody(b2body);
+            b2body = null;
             destroyed = true;
         }
     }
@@ -87,7 +86,6 @@ public class Sword extends Sprite {
     public void setToDestroy(){
         setToDestroy = true;
     }
-
     public boolean isDestroyed(){
         return destroyed;
     }

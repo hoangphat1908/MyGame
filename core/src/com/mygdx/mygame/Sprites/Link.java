@@ -53,15 +53,13 @@ public class Link extends Sprite{
     private Animation<TextureRegion> linkSlashSouth;
     private Animation<TextureRegion> linkSlashWest;
     private float stateTimer;
-    private boolean walkingNorth;
-    private boolean walkingEast;
     private PlayScreen screen;
     private Sword sword;
     private int health;
     private int maxHealth;
-    private Texture blank;
     private boolean isHit;
     private float invTimer;
+    private int setToSlash=-1;
     public Link(PlayScreen screen){
         this.screen = screen;
         this.world = screen.getWorld();
@@ -134,7 +132,6 @@ public class Link extends Sprite{
         setRegion(linkStandNorth);
         maxHealth = 200;
         health = 200;
-        blank = new Texture("blank.png");
         isHit = false;
         invTimer = 0;
     }
@@ -177,9 +174,17 @@ public class Link extends Sprite{
                 invTimer = 0;
             }
         }
+        if(setToSlash!=-1){
+            slash(setToSlash);
+            setToSlash(-1);
+        }
 
-        if(sword!=null)
+        if(sword!=null) {
             sword.update(dt);
+            if(sword.isDestroyed())
+                sword = null;
+        }
+
 
     }
     public TextureRegion getFrame(float dt){
@@ -268,16 +273,16 @@ public class Link extends Sprite{
     public State getState(){
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && currentState != State.SLASHING_NORTH && currentState != State.SLASHING_EAST && currentState != State.SLASHING_SOUTH && currentState != State.SLASHING_WEST) {
                 if (currentState == State.STANDING_NORTH || currentState == State.WALKING_NORTH) {
-                    slash(0);
+                    setToSlash(0);
                     return State.SLASHING_NORTH;
                 } else if (currentState == State.STANDING_EAST || currentState == State.WALKING_EAST) {
-                    slash(1);
+                    setToSlash(1);
                     return State.SLASHING_EAST;
                 } else if (currentState == State.STANDING_SOUTH || currentState == State.WALKING_SOUTH) {
-                    slash(2);
+                    setToSlash(2);
                     return State.SLASHING_SOUTH;
                 } else {
-                    slash(3);
+                    setToSlash(3);
                     return State.SLASHING_WEST;
                 }
             } else if (b2body.getLinearVelocity().y > 0 && currentState != State.SLASHING_NORTH)
@@ -315,7 +320,9 @@ public class Link extends Sprite{
         fdef.filter.maskBits = MyGame.BORDER_BIT |
                 MyGame.BUSH_BIT |
                 MyGame.ENEMY_BIT |
-                MyGame.OBSTACLE_BIT;
+                MyGame.OBSTACLE_BIT|
+                MyGame.TOWER_VISION_BIT|
+                MyGame.ARROW_BIT;
 
 
         fdef.shape = shape;
@@ -360,10 +367,15 @@ public class Link extends Sprite{
             filter.maskBits = MyGame.BORDER_BIT |
                     MyGame.BUSH_BIT |
                     MyGame.ENEMY_BIT|
-                    MyGame.OBSTACLE_BIT;
+                    MyGame.OBSTACLE_BIT|
+                    MyGame.TOWER_VISION_BIT|
+                    MyGame.ARROW_BIT;
         for(Fixture fixture : b2body.getFixtureList()){
             fixture.setFilterData(filter);
         }
+    }
+    public void setToSlash(int direction){
+        setToSlash = direction;
     }
 
 }

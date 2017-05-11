@@ -20,7 +20,8 @@ public class MyGame extends Game {
 	public static final short INVINCIBILITY_BIT = 16;
 	public static final short OBSTACLE_BIT = 32;
 	public static final short ENEMY_BIT = 64;
-
+	public static final short ARROW_BIT = 128;
+	public static final short TOWER_VISION_BIT = 256;
 	public static final short SWORD_BIT = 512;
 
 	public SpriteBatch batch;

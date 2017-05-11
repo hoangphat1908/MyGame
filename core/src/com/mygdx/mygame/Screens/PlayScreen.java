@@ -28,6 +28,7 @@ import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Scenes.Hud;
 import com.mygdx.mygame.Sprites.Enemies.Armos;
 import com.mygdx.mygame.Sprites.Enemies.Enemy;
+import com.mygdx.mygame.Sprites.Enemies.Tower;
 import com.mygdx.mygame.Sprites.Link;
 import com.mygdx.mygame.Tools.B2WorldCreator;
 import com.mygdx.mygame.Tools.WorldContactListener;
@@ -101,7 +102,14 @@ public class PlayScreen implements Screen {
 
         world.step(1/60f, 6, 2);
         player.update(dt);
-        for(Enemy enemy : creator.getKnights())
+        for(Armos enemy : creator.getKnights()) {
+            if(enemy.isDestroyed())
+                creator.getKnights().removeValue(enemy, true);
+            else
+                enemy.update(dt);
+
+        }
+        for(Tower enemy : creator.getTowers() )
             enemy.update(dt);
         gameCam.position.x = player.b2body.getPosition().x;
         gameCam.position.y = player.b2body.getPosition().y;
@@ -124,7 +132,9 @@ public class PlayScreen implements Screen {
         for(Enemy enemy : creator.getKnights()) {
             enemy.draw(game.batch);
         }
-
+        for(Enemy enemy : creator.getTowers()) {
+            enemy.draw(game.batch);
+        }
 
         game.batch.end();
 

@@ -14,6 +14,7 @@ import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Screens.PlayScreen;
 import com.mygdx.mygame.Sprites.Bush;
 import com.mygdx.mygame.Sprites.Enemies.Armos;
+import com.mygdx.mygame.Sprites.Enemies.Tower;
 import com.mygdx.mygame.Sprites.Obstacle;
 
 /**
@@ -22,6 +23,7 @@ import com.mygdx.mygame.Sprites.Obstacle;
 
 public class B2WorldCreator {
     private Array<Armos> knights;
+    private Array<Tower> towers;
     public  B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
@@ -62,13 +64,19 @@ public class B2WorldCreator {
         //Armos Knights
         knights = new Array<Armos>();
         for(MapObject object: map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
             knights.add(new Armos(screen, object));
+        }
+        //Arrow Towers
+        towers = new Array<Tower>();
+        for(MapObject object: map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+            towers.add(new Tower(screen, object));
         }
     }
 
     public Array<Armos> getKnights() {
         return knights;
+    }
+    public Array<Tower> getTowers(){
+        return  towers;
     }
 }
