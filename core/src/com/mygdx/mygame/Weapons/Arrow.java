@@ -117,7 +117,6 @@ public class Arrow extends Sprite {
             shape.setPosition(arrowHead);
             fdef.filter.categoryBits = MyGame.ARROW_BIT;
             fdef.filter.maskBits = MyGame.BUSH_BIT |
-                    MyGame.BORDER_BIT |
                     MyGame.OBSTACLE_BIT |
                     MyGame.ENEMY_BIT |
                     MyGame.LINK_BIT;

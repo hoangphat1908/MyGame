@@ -25,9 +25,8 @@ import com.mygdx.mygame.Screens.PlayScreen;
 public abstract class InteractiveTileObject {
     protected World world;
     protected TiledMap map;
-    protected TiledMapTile tile;
     protected Rectangle bounds;
-    protected Body body;
+    protected Body b2body;
     protected Fixture fixture;
     protected PlayScreen screen;
     protected MapObject object;
@@ -39,16 +38,9 @@ public abstract class InteractiveTileObject {
         this.bounds = ((RectangleMapObject) object).getRectangle();
 
         BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-
         bdef.type = BodyDef.BodyType.StaticBody;
         bdef.position.set((bounds.getX()+bounds.getWidth() /2) / MyGame.PPM, (bounds.getY() + bounds.getHeight() / 2) / MyGame.PPM);
-        body = world.createBody(bdef);
-
-        shape.setAsBox((bounds.getWidth()/4)/MyGame.PPM, (bounds.getHeight()/4)/MyGame.PPM);
-        fdef.shape = shape;
-        fixture = body.createFixture(fdef);
+        b2body = world.createBody(bdef);
     }
 
     public abstract void onSlash();
@@ -57,18 +49,5 @@ public abstract class InteractiveTileObject {
         filter.categoryBits = filterBit;
         fixture.setFilterData(filter);
     }
-
-    public void deleteCells(){
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
-        int tileX = (int)bounds.getX()/8;
-        int tileY = (int)bounds.getY()/8;
-        int tileWidth = (int)bounds.getWidth()/8;
-        int tileHeight = (int)bounds.getHeight()/8;
-        for(int i = 0; i < tileWidth; i++)
-            for(int j = 0; j < tileHeight; j++)
-                layer.getCell(tileX+i, tileY+j).setTile(null);
-
-    }
-
 
 }

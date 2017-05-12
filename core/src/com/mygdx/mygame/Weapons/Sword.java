@@ -67,7 +67,6 @@ public class Sword extends Sprite {
 
         fdef.filter.categoryBits = MyGame.SWORD_BIT;
         fdef.filter.maskBits = MyGame.BUSH_BIT |
-                MyGame.BORDER_BIT |
                 MyGame.OBSTACLE_BIT|
                 MyGame.ENEMY_BIT;
         fdef.shape = shape;

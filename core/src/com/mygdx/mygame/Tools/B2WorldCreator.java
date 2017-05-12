@@ -15,6 +15,8 @@ import com.mygdx.mygame.Screens.PlayScreen;
 import com.mygdx.mygame.Sprites.Bush;
 import com.mygdx.mygame.Sprites.Destination;
 import com.mygdx.mygame.Sprites.Enemies.Armos;
+import com.mygdx.mygame.Sprites.Enemies.ArrowTower;
+import com.mygdx.mygame.Sprites.Enemies.Enemy;
 import com.mygdx.mygame.Sprites.Enemies.Tower;
 import com.mygdx.mygame.Sprites.Obstacle;
 
@@ -23,63 +25,38 @@ import com.mygdx.mygame.Sprites.Obstacle;
  */
 
 public class B2WorldCreator {
-    private Array<Armos> knights;
+    private Array<Enemy> enemies;
     private Array<Tower> towers;
+    private PlayScreen screen;
     public  B2WorldCreator(PlayScreen screen){
-        World world = screen.getWorld();
+        this.screen = screen;
         TiledMap map = screen.getMap();
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-        //Obstacle
+        //Border Trees and Obstacles
         for(MapObject object: map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / MyGame.PPM, (rect.getY() + rect.getHeight() / 2) / MyGame.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox((rect.getWidth() / 2)/MyGame.PPM, (rect.getHeight() / 2)/MyGame.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
-        //Border Trees
-        for(MapObject object: map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / MyGame.PPM, (rect.getY() + rect.getHeight() / 2) / MyGame.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox((rect.getWidth() / 2)/MyGame.PPM, (rect.getHeight() / 2)/MyGame.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
+            new Obstacle(screen, object);
         }
         //Bushes
-        for(MapObject object: map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object: map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             new Bush(screen, object);
         }
         //Armos Knights
-        knights = new Array<Armos>();
+        enemies = new Array<Enemy>();
         for(MapObject object: map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-            knights.add(new Armos(screen, object));
+            enemies.add(new Armos(screen, object));
         }
         //Arrow Towers
         towers = new Array<Tower>();
-        for(MapObject object: map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
-            towers.add(new Tower(screen, object));
+        for(MapObject object: map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+            towers.add(new ArrowTower(screen, object));
         }
         //Destination
-        for(MapObject object: map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object: map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
             new Destination(screen, object);
         }
     }
 
-    public Array<Armos> getKnights() {
-        return knights;
+    public Array<Enemy> getEnemies() {
+        return enemies;
     }
     public Array<Tower> getTowers(){
         return  towers;

@@ -16,7 +16,7 @@ public class MyGame extends Game {
 	public static final int V_HEIGHT = 166;
 	public static final float PPM = 100;
 
-	public static final short BORDER_BIT = 1;
+	public static final short DESTINATION_BIT = 1;
 	public static final short LINK_BIT = 2;
 	public static final short BUSH_BIT = 4;
 	public static final short DESTROYED_BIT = 8;
@@ -26,7 +26,7 @@ public class MyGame extends Game {
 	public static final short ARROW_BIT = 128;
 	public static final short TOWER_VISION_BIT = 256;
 	public static final short SWORD_BIT = 512;
-	public static final short DESTINATION_BIT = 1024;
+
 
 	public SpriteBatch batch;
 	public static AssetManager manager;

@@ -1,28 +1,16 @@
 package com.mygdx.mygame.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -30,6 +18,7 @@ import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Scenes.Hud;
 import com.mygdx.mygame.Sprites.Enemies.Armos;
 import com.mygdx.mygame.Sprites.Enemies.Enemy;
+import com.mygdx.mygame.Sprites.Enemies.ArrowTower;
 import com.mygdx.mygame.Sprites.Enemies.Tower;
 import com.mygdx.mygame.Sprites.Link;
 import com.mygdx.mygame.Tools.B2WorldCreator;
@@ -53,11 +42,9 @@ public class PlayScreen implements Screen {
 
     //Box2d variables
     private World world;
-    //private Box2DDebugRenderer b2dr;
+    private Box2DDebugRenderer b2dr;
 
     private B2WorldCreator creator;
-    float spriteXposition;
-    float spriteYposition;
     private Link player;
     private Music music;
 
@@ -80,8 +67,8 @@ public class PlayScreen implements Screen {
         //set gameCam to be centered correctly at the start of the map
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         world = new World(new Vector2(0, 0), true);
-        //b2dr = new Box2DDebugRenderer();
-        //b2dr.SHAPE_STATIC.set(0, 0, 0, 1);
+        b2dr = new Box2DDebugRenderer();
+        b2dr.SHAPE_STATIC.set(0, 0, 0, 1);
 
 
         creator =new B2WorldCreator(this);
@@ -113,9 +100,9 @@ public class PlayScreen implements Screen {
         hud.update(dt);
         if(hud.getTimer()==0)
             player.setToDie();
-        for(Armos enemy : creator.getKnights()) {
+        for(Enemy enemy : creator.getEnemies()) {
             if(enemy.isDestroyed())
-                creator.getKnights().removeValue(enemy, true);
+                creator.getEnemies().removeValue(enemy, true);
             else
                 enemy.update(dt);
 
@@ -136,15 +123,15 @@ public class PlayScreen implements Screen {
 
         renderer.render();
 
-        //b2dr.render(world, gameCam.combined);
+        b2dr.render(world, gameCam.combined);
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        for(Enemy enemy : creator.getKnights()) {
+        for(Enemy enemy : creator.getEnemies()) {
             enemy.draw(game.batch);
         }
-        for(Enemy enemy : creator.getTowers()) {
-            enemy.draw(game.batch);
+        for(Tower tower : creator.getTowers()) {
+            tower.draw(game.batch);
         }
 
         game.batch.end();
@@ -212,7 +199,7 @@ public class PlayScreen implements Screen {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        //b2dr.dispose();
+        b2dr.dispose();
         hud.dispose();
     }
 }

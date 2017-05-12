@@ -3,8 +3,6 @@ package com.mygdx.mygame.Sprites;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,7 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -325,8 +322,7 @@ public class Link extends Sprite{
         shape.setRadius(11 / MyGame.PPM);
 
         fdef.filter.categoryBits = MyGame.LINK_BIT;
-        fdef.filter.maskBits = MyGame.BORDER_BIT |
-                MyGame.BUSH_BIT |
+        fdef.filter.maskBits = MyGame.BUSH_BIT |
                 MyGame.ENEMY_BIT |
                 MyGame.OBSTACLE_BIT|
                 MyGame.TOWER_VISION_BIT|
@@ -366,9 +362,6 @@ public class Link extends Sprite{
     public int getHealth(){
         return health;
     }
-    public int getMaxHealth(){
-        return maxHealth;
-    }
     public void draw(Batch batch){
             super.draw(batch);
     }
@@ -377,14 +370,12 @@ public class Link extends Sprite{
         Filter filter = new Filter();
         filter.categoryBits = categoryBit;
         if(categoryBit == MyGame.INVINCIBILITY_BIT)
-            filter.maskBits = MyGame.BORDER_BIT |
-                    MyGame.BUSH_BIT |
+            filter.maskBits = MyGame.BUSH_BIT |
                     MyGame.OBSTACLE_BIT|
                     MyGame.TOWER_VISION_BIT|
                     MyGame.DESTINATION_BIT;
         else
-            filter.maskBits = MyGame.BORDER_BIT |
-                    MyGame.BUSH_BIT |
+            filter.maskBits = MyGame.BUSH_BIT |
                     MyGame.ENEMY_BIT|
                     MyGame.OBSTACLE_BIT|
                     MyGame.TOWER_VISION_BIT|

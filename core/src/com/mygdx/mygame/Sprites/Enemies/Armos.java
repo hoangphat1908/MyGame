@@ -91,8 +91,7 @@ public class Armos extends Enemy{
         CircleShape shape = new CircleShape();
         shape.setRadius(20 / MyGame.PPM);
         fdef.filter.categoryBits = MyGame.ENEMY_BIT;
-        fdef.filter.maskBits = MyGame.BORDER_BIT |
-                MyGame.BUSH_BIT|
+        fdef.filter.maskBits = MyGame.BUSH_BIT|
                 MyGame.ENEMY_BIT|
                 MyGame.OBSTACLE_BIT|
                 MyGame.LINK_BIT|

@@ -42,9 +42,6 @@ public abstract class Enemy extends Sprite{
     public abstract void reverseVelocity(boolean x, boolean y);
     public abstract void getHit(int damage);
     public abstract boolean isDestroyed();
-    public int getHealth(){
-        return health;
-    }
     public void draw(Batch batch){
         super.draw(batch);
         batch.setColor(Color.RED);

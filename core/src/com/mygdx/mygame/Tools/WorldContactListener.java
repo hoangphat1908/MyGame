@@ -1,6 +1,5 @@
 package com.mygdx.mygame.Tools;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -8,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Sprites.Enemies.Enemy;
-import com.mygdx.mygame.Sprites.Enemies.Tower;
+import com.mygdx.mygame.Sprites.Enemies.ArrowTower;
 import com.mygdx.mygame.Sprites.InteractiveTileObject;
 import com.mygdx.mygame.Sprites.Link;
 import com.mygdx.mygame.Weapons.Arrow;
@@ -38,10 +37,25 @@ public class WorldContactListener implements ContactListener{
             case MyGame.INVINCIBILITY_BIT | MyGame.TOWER_VISION_BIT:
             case MyGame.LINK_BIT | MyGame.TOWER_VISION_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.LINK_BIT) {
-                    ((Tower) fixB.getUserData()).setToFire();
+                    ((ArrowTower) fixB.getUserData()).setToFire();
                 }
                 else {
-                    ((Tower) fixA.getUserData()).setToFire();
+                    ((ArrowTower) fixA.getUserData()).setToFire();
+                }
+                break;
+
+            case MyGame.ENEMY_BIT | MyGame.OBSTACLE_BIT:
+            case MyGame.ENEMY_BIT | MyGame.ENEMY_BIT:
+            case MyGame.ENEMY_BIT | MyGame.BUSH_BIT:
+                if(fixA.getFilterData().categoryBits == MyGame.ENEMY_BIT&&fixB.getFilterData().categoryBits == MyGame.ENEMY_BIT){
+                        ((Enemy) fixA.getUserData()).reverseVelocity(true, true);
+                        ((Enemy) fixB.getUserData()).reverseVelocity(true, true);
+                }
+                else if(fixA.getFilterData().categoryBits == MyGame.ENEMY_BIT) {
+                        ((Enemy) fixA.getUserData()).reverseVelocity(true, true);
+                }
+                else {
+                        ((Enemy) fixB.getUserData()).reverseVelocity(true, true);
                 }
                 break;
             case MyGame.SWORD_BIT | MyGame.BUSH_BIT:
@@ -52,21 +66,6 @@ public class WorldContactListener implements ContactListener{
                 else {
                     ((Sword) fixB.getUserData()).setToDestroy();
                     ((InteractiveTileObject) fixA.getUserData()).onSlash();
-                }
-                break;
-            case MyGame.ENEMY_BIT | MyGame.OBSTACLE_BIT:
-            case MyGame.ENEMY_BIT | MyGame.ENEMY_BIT:
-            case MyGame.ENEMY_BIT | MyGame.BUSH_BIT:
-            case MyGame.ENEMY_BIT | MyGame.BORDER_BIT:
-                if(fixA.getFilterData().categoryBits == MyGame.ENEMY_BIT&&fixB.getFilterData().categoryBits == MyGame.ENEMY_BIT){
-                        ((Enemy) fixA.getUserData()).reverseVelocity(true, true);
-                        ((Enemy) fixB.getUserData()).reverseVelocity(true, true);
-                }
-                else if(fixA.getFilterData().categoryBits == MyGame.ENEMY_BIT) {
-                        ((Enemy) fixA.getUserData()).reverseVelocity(true, true);
-                }
-                else {
-                        ((Enemy) fixB.getUserData()).reverseVelocity(true, true);
                 }
                 break;
             case MyGame.SWORD_BIT | MyGame.ENEMY_BIT:
@@ -105,8 +104,6 @@ public class WorldContactListener implements ContactListener{
                     ((Link) fixA.getUserData()).getHit(30, ((Arrow)fixB.getUserData()).velocity);
                 }
                 break;
-
-
         }
 
     }
@@ -120,10 +117,10 @@ public class WorldContactListener implements ContactListener{
             case MyGame.INVINCIBILITY_BIT | MyGame.TOWER_VISION_BIT:
             case MyGame.LINK_BIT | MyGame.TOWER_VISION_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.LINK_BIT) {
-                    ((Tower) fixB.getUserData()).setToStopFire();
+                    ((ArrowTower) fixB.getUserData()).setToStopFire();
                 }
                 else {
-                    ((Tower) fixA.getUserData()).setToStopFire();
+                    ((ArrowTower) fixA.getUserData()).setToStopFire();
                 }
                 break;
         }
