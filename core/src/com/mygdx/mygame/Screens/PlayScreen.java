@@ -53,7 +53,7 @@ public class PlayScreen implements Screen {
 
     //Box2d variables
     private World world;
-    private Box2DDebugRenderer b2dr;
+    //private Box2DDebugRenderer b2dr;
 
     private B2WorldCreator creator;
     float spriteXposition;
@@ -80,7 +80,8 @@ public class PlayScreen implements Screen {
         //set gameCam to be centered correctly at the start of the map
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         world = new World(new Vector2(0, 0), true);
-        b2dr = new Box2DDebugRenderer();
+        //b2dr = new Box2DDebugRenderer();
+        //b2dr.SHAPE_STATIC.set(0, 0, 0, 1);
 
 
         creator =new B2WorldCreator(this);
@@ -135,7 +136,7 @@ public class PlayScreen implements Screen {
 
         renderer.render();
 
-        b2dr.render(world, gameCam.combined);
+        //b2dr.render(world, gameCam.combined);
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
@@ -211,7 +212,7 @@ public class PlayScreen implements Screen {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        b2dr.dispose();
+        //b2dr.dispose();
         hud.dispose();
     }
 }
