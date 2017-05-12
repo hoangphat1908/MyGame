@@ -28,6 +28,10 @@ public class Sword extends Sprite {
         setBounds(x, y, 6 / MyGame.PPM, 6 / MyGame.PPM);
         defineSword();
     }
+
+    /**
+     * Define the body of the sword
+     */
     public void defineSword(){
         BodyDef bdef = new BodyDef();
         int swordX;

@@ -40,6 +40,9 @@ public abstract class InteractiveTileObject {
         b2body = world.createBody(bdef);
     }
 
+    /**
+     * Action when the tile is slashed
+     */
     public abstract void onSlash();
     public void setCategoryFilter(short filterBit){
         Filter filter = new Filter();

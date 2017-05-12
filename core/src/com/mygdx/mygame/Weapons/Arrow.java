@@ -55,6 +55,9 @@ public class Arrow extends Sprite {
         defineArrow();
     }
 
+    /**
+     * Define the body of the arrow
+     */
     public void defineArrow(){
             BodyDef bdef = new BodyDef();
             int swordX;

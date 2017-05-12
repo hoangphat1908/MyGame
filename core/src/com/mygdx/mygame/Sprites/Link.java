@@ -183,8 +183,6 @@ public class Link extends Sprite{
             if(sword.isDestroyed())
                 sword = null;
         }
-
-
     }
     public TextureRegion getFrame(float dt){
         currentState = getState();
@@ -310,6 +308,10 @@ public class Link extends Sprite{
             return previousState;
 
     }
+
+    /**
+     * Define the body of the player
+     */
     public void defineLink(){
         BodyDef bdef = new BodyDef();
         bdef.position.set((9*8+5) / MyGame.PPM, (11*8+5) /MyGame.PPM);
@@ -332,11 +334,22 @@ public class Link extends Sprite{
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }
+
+    /**
+     * Create a sword slash in front of the player
+     * @param direction direction the player is facing
+     */
     public void slash(int direction){
         sword = new Sword(screen, b2body.getPosition().x, b2body.getPosition().y, direction);
         manager.get("audio/sounds/slash.wav", Sound.class).play();
 
     }
+
+    /**
+     * Action when the enemy get hit
+     * @param damage amount of damage
+     * @param eVelocity velocity of the collision object
+     */
     public void getHit(int damage, Vector2 eVelocity){
         isHit = true;
         float xUnit = eVelocity.x !=0 ?eVelocity.x / Math.abs(eVelocity.x) : 0;
@@ -354,10 +367,12 @@ public class Link extends Sprite{
             linkIsDead = true;
             manager.get("audio/sounds/die.wav", Sound.class).play();
         }
-
-
-
     }
+
+    /**
+     * Get the current health
+     * @return currenthealth
+     */
     public int getHealth(){
         return health;
     }

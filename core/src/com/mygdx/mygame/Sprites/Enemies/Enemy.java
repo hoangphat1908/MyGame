@@ -38,8 +38,23 @@ public abstract class Enemy extends Sprite{
         blank = new Texture("blank.png");
     }
     public abstract void update(float dt);
+
+    /**
+     * Define the type of enemy
+     */
     protected abstract void defineEnemy();
+
+    /**
+     * Reverse the velocity of the enemy
+     * @param x reverse in the x direction
+     * @param y reverse in the y direction
+     */
     public abstract void reverseVelocity(boolean x, boolean y);
+
+    /**
+     * Action when the enemy get hit
+     * @param damage amount of damage
+     */
     public abstract void getHit(int damage);
     public abstract boolean isDestroyed();
     public void draw(Batch batch){

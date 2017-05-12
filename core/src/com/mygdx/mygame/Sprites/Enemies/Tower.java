@@ -33,6 +33,10 @@ public abstract class Tower extends Sprite {
         setPosition(rect.getX()/ MyGame.PPM, rect.getY()/MyGame.PPM);
     }
     public abstract void update(float dt);
+
+    /**
+     * Define the type of tower
+     */
     protected abstract void defineTower();
 
 }

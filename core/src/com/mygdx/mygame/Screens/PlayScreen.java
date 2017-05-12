@@ -151,6 +151,11 @@ public class PlayScreen implements Screen {
             dispose();
         }
     }
+
+    /**
+     * Check if the game is over
+     * @return game is over
+     */
     public boolean gameOver(){
         if(player.currentState == Link.State.DEAD&&player.getStateTimer() > 1.5){
 
@@ -158,6 +163,11 @@ public class PlayScreen implements Screen {
         }
         return false;
     }
+
+    /**
+     * Check if the game is completed
+     * @return game is completed
+     */
     public boolean gameCompleted(){
         if(player.currentState == Link.State.COMPLETE&&player.getStateTimer() > .5){
             return true;
