@@ -1,5 +1,6 @@
 package com.mygdx.mygame.Scenes;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,11 +20,13 @@ import com.mygdx.mygame.MyGame;
 public class Hud implements Disposable{
     public Stage stage;
     private Viewport viewport;
+    private boolean hasDied;
 
     private Integer worldTimer;
     private  float timeCount;
     private Integer health;
     private Integer maxHealth;
+
 
     Label countDownLabel;
     Label healthLabel;
@@ -33,7 +36,7 @@ public class Hud implements Disposable{
     Label linkLabel;
 
     public Hud(SpriteBatch sb){
-        worldTimer = 60;
+        worldTimer = 120;
         timeCount = 0;
         health = 200;
         maxHealth = 200;
@@ -60,6 +63,25 @@ public class Hud implements Disposable{
         stage.addActor(table);
 
     }
+    public void update(float dt){
+        timeCount +=dt;
+        if(timeCount >=1){
+            if(worldTimer > 0)
+                worldTimer--;
+            else {
+                worldTimer = 0;
+                if(!hasDied) {
+                    MyGame.manager.get("audio/sounds/die.wav", Sound.class).play();
+                    hasDied = true;
+                }
+            }
+            countDownLabel.setText(String.format("%02d", worldTimer));
+            if(worldTimer < 5 && worldTimer > 0){
+                MyGame.manager.get("audio/sounds/time.wav", Sound.class).play();
+            }
+            timeCount = 0;
+        }
+    }
 
     @Override
     public void dispose() {
@@ -72,5 +94,8 @@ public class Hud implements Disposable{
     public void setHealth(int health){
         this.health = health;
         healthLabel.setText(String.format("%03d/%03d", health, maxHealth));
+    }
+    public int getTimer(){
+        return worldTimer;
     }
 }

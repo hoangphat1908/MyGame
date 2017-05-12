@@ -1,5 +1,6 @@
 package com.mygdx.mygame.Weapons;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -129,10 +130,11 @@ public class Arrow extends Sprite {
     public void update(float dt){
         stateTime += dt;
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        if((stateTime > 2 || setToDestroy) && !destroyed) {
+        if(((b2body.getLinearVelocity().x==0&&b2body.getLinearVelocity().y==0)||stateTime > 1.5 || setToDestroy) && !destroyed) {
             world.destroyBody(b2body);
             b2body = null;
             destroyed = true;
+            MyGame.manager.get("audio/sounds/arrow_hit.wav", Sound.class).play();
         }
     }
 

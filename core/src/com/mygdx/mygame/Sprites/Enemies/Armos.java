@@ -1,5 +1,6 @@
 package com.mygdx.mygame.Sprites.Enemies;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -107,12 +108,16 @@ public class Armos extends Enemy{
             super.draw(batch);
     }
     public void getHit(int damage){
-        if(health > damage)
-            health-=damage;
+        if(health > damage) {
+            health -= damage;
+            MyGame.manager.get("audio/sounds/armos_get_hit.wav", Sound.class).play();
+        }
         else{
             health = 0;
             setToDestroy = true;
+            MyGame.manager.get("audio/sounds/armos_die.wav", Sound.class).play();
         }
+
     }
     public void reverseVelocity(boolean x, boolean y){
         if(x)

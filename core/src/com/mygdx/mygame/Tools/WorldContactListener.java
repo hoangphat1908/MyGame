@@ -26,7 +26,16 @@ public class WorldContactListener implements ContactListener{
         Fixture fixB = contact.getFixtureB();
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
         switch (cDef){
-
+            case MyGame.INVINCIBILITY_BIT | MyGame.DESTINATION_BIT:
+            case MyGame.LINK_BIT | MyGame.DESTINATION_BIT:
+                if(fixA.getFilterData().categoryBits == MyGame.DESTINATION_BIT) {
+                    ((Link) fixB.getUserData()).setToWin();
+                }
+                else {
+                    ((Link) fixA.getUserData()).setToWin();
+                }
+                break;
+            case MyGame.INVINCIBILITY_BIT | MyGame.TOWER_VISION_BIT:
             case MyGame.LINK_BIT | MyGame.TOWER_VISION_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.LINK_BIT) {
                     ((Tower) fixB.getUserData()).setToFire();
@@ -108,6 +117,7 @@ public class WorldContactListener implements ContactListener{
         Fixture fixB = contact.getFixtureB();
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
         switch (cDef){
+            case MyGame.INVINCIBILITY_BIT | MyGame.TOWER_VISION_BIT:
             case MyGame.LINK_BIT | MyGame.TOWER_VISION_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.LINK_BIT) {
                     ((Tower) fixB.getUserData()).setToStopFire();

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Screens.PlayScreen;
 import com.mygdx.mygame.Sprites.Bush;
+import com.mygdx.mygame.Sprites.Destination;
 import com.mygdx.mygame.Sprites.Enemies.Armos;
 import com.mygdx.mygame.Sprites.Enemies.Tower;
 import com.mygdx.mygame.Sprites.Obstacle;
@@ -70,6 +71,10 @@ public class B2WorldCreator {
         towers = new Array<Tower>();
         for(MapObject object: map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
             towers.add(new Tower(screen, object));
+        }
+        //Destination
+        for(MapObject object: map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+            new Destination(screen, object);
         }
     }
 

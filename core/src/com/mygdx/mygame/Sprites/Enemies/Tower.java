@@ -2,6 +2,7 @@ package com.mygdx.mygame.Sprites.Enemies;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -83,7 +84,8 @@ public class Tower extends Enemy{
         fdef.filter.categoryBits = MyGame.OBSTACLE_BIT;
         fdef.filter.maskBits = MyGame.ENEMY_BIT|
                 MyGame.LINK_BIT|
-                MyGame.SWORD_BIT;
+                MyGame.SWORD_BIT|
+                MyGame.INVINCIBILITY_BIT;
 
 
         Vector2[] vertices = new Vector2[4];
@@ -113,12 +115,26 @@ public class Tower extends Enemy{
                 vertices[2] = new Vector2(32/MyGame.PPM , 28/MyGame.PPM);
                 vertices[3] = new Vector2(112/MyGame.PPM , 48/MyGame.PPM);
                 break;
+            case 2:
+                vertices[0] = new Vector2(20/MyGame.PPM, 8/MyGame.PPM);
+                vertices[1] = new Vector2(0/MyGame.PPM, -72/MyGame.PPM  );
+                vertices[2] = new Vector2(28/MyGame.PPM , 8/MyGame.PPM);
+                vertices[3] = new Vector2(48/MyGame.PPM , -72/MyGame.PPM);
+                break;
+            case 3:
+            default:
+                vertices[0] = new Vector2(16/MyGame.PPM, 20/MyGame.PPM);
+                vertices[1] = new Vector2(-64/MyGame.PPM, 0/MyGame.PPM  );
+                vertices[2] = new Vector2(16/MyGame.PPM , 28/MyGame.PPM);
+                vertices[3] = new Vector2(-64/MyGame.PPM , 48/MyGame.PPM);
+                break;
         }
         PolygonShape shape2 = new PolygonShape();
         shape2.set(vertices);
         fdef2.filter.categoryBits = MyGame.TOWER_VISION_BIT;
         fdef2.filter.maskBits = MyGame.LINK_BIT|
-                            MyGame.ENEMY_BIT;
+                            MyGame.ENEMY_BIT|
+                            MyGame.INVINCIBILITY_BIT;
         fdef2.shape = shape2;
         fdef2.isSensor = true;
         b2body.createFixture(fdef2).setUserData(this);
@@ -152,6 +168,7 @@ public class Tower extends Enemy{
         }
 
         arrows.add(new Arrow(screen, positionX, positionY, direction));
+        MyGame.manager.get("audio/sounds/arrow_hit.wav", Sound.class).play();
 
     }
     public void draw(Batch batch){

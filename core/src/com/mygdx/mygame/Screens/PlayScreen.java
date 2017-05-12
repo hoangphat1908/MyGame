@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -57,6 +59,7 @@ public class PlayScreen implements Screen {
     float spriteXposition;
     float spriteYposition;
     private Link player;
+    private Music music;
 
 
 
@@ -85,6 +88,10 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
+        music = MyGame.manager.get("audio/music/bg_music.mp3", Music.class);
+        music.setLooping(true);
+        music.setVolume(0.2f);
+        music.play();
     }
     public TextureAtlas getAtlas(){
         return atlas;
@@ -102,6 +109,9 @@ public class PlayScreen implements Screen {
 
         world.step(1/60f, 6, 2);
         player.update(dt);
+        hud.update(dt);
+        if(hud.getTimer()==0)
+            player.setToDie();
         for(Armos enemy : creator.getKnights()) {
             if(enemy.isDestroyed())
                 creator.getKnights().removeValue(enemy, true);
@@ -141,6 +151,33 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.setHealth(player.getHealth());
         hud.stage.draw();
+
+        if(gameOver()){
+            music.stop();
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
+        if(gameCompleted()){
+            music.stop();
+            Music finishMusic = MyGame.manager.get("audio/music/finish_music.mp3", Music.class);
+            finishMusic.setVolume(0.2f);
+            finishMusic.play();
+            game.setScreen(new GameCompletedScreen(game));
+            dispose();
+        }
+    }
+    public boolean gameOver(){
+        if(player.currentState == Link.State.DEAD&&player.getStateTimer() > 1.5){
+
+            return true;
+        }
+        return false;
+    }
+    public boolean gameCompleted(){
+        if(player.currentState == Link.State.COMPLETE&&player.getStateTimer() > .5){
+            return true;
+        }
+        return false;
     }
 
     @Override

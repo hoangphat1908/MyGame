@@ -1,6 +1,7 @@
 package com.mygdx.mygame.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -26,8 +27,8 @@ public class Bush extends  InteractiveTileObject {
 
     @Override
     public void onSlash() {
-        Gdx.app.log("Bush","Collision");
         setCategoryFilter(MyGame.DESTROYED_BIT);
         deleteCells();
+        MyGame.manager.get("audio/sounds/bush_get_cut.wav", Sound.class).play();
     }
 }

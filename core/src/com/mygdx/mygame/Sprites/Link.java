@@ -2,6 +2,7 @@ package com.mygdx.mygame.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -30,7 +31,7 @@ import com.mygdx.mygame.Weapons.Sword;
 public class Link extends Sprite{
 
 
-    public enum State {STANDING_NORTH, STANDING_EAST, STANDING_SOUTH, STANDING_WEST, WALKING_NORTH, WALKING_EAST, WALKING_SOUTH, WALKING_WEST, SLASHING_NORTH, SLASHING_EAST, SLASHING_SOUTH, SLASHING_WEST};
+    public enum State {STANDING_NORTH, STANDING_EAST, STANDING_SOUTH, STANDING_WEST, WALKING_NORTH, WALKING_EAST, WALKING_SOUTH, WALKING_WEST, SLASHING_NORTH, SLASHING_EAST, SLASHING_SOUTH, SLASHING_WEST, DEAD, COMPLETE};
     public State currentState;
     public State previousState;
     public TextureRegion currentRegion;
@@ -60,6 +61,8 @@ public class Link extends Sprite{
     private boolean isHit;
     private float invTimer;
     private int setToSlash=-1;
+    private boolean linkIsDead;
+    private boolean completed;
     public Link(PlayScreen screen){
         this.screen = screen;
         this.world = screen.getWorld();
@@ -137,7 +140,7 @@ public class Link extends Sprite{
     }
     public void update(float dt){
         //&& b2body.getLinearVelocity().x <= 2
-        if(!isHit||invTimer>1) {
+        if((!isHit||invTimer>1)&&currentState!=State.DEAD&&currentState!=State.COMPLETE) {
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
                 b2body.setLinearVelocity(new Vector2(-2f, 0));
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -271,7 +274,12 @@ public class Link extends Sprite{
         return region;
     }
     public State getState(){
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && currentState != State.SLASHING_NORTH && currentState != State.SLASHING_EAST && currentState != State.SLASHING_SOUTH && currentState != State.SLASHING_WEST) {
+        if(linkIsDead) {
+            return State.DEAD;
+        }
+        if(completed)
+            return State.COMPLETE;
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && currentState != State.SLASHING_NORTH && currentState != State.SLASHING_EAST && currentState != State.SLASHING_SOUTH && currentState != State.SLASHING_WEST) {
                 if (currentState == State.STANDING_NORTH || currentState == State.WALKING_NORTH) {
                     setToSlash(0);
                     return State.SLASHING_NORTH;
@@ -322,7 +330,8 @@ public class Link extends Sprite{
                 MyGame.ENEMY_BIT |
                 MyGame.OBSTACLE_BIT|
                 MyGame.TOWER_VISION_BIT|
-                MyGame.ARROW_BIT;
+                MyGame.ARROW_BIT|
+                MyGame.DESTINATION_BIT;
 
 
         fdef.shape = shape;
@@ -330,6 +339,7 @@ public class Link extends Sprite{
     }
     public void slash(int direction){
         sword = new Sword(screen, b2body.getPosition().x, b2body.getPosition().y, direction);
+        MyGame.manager.get("audio/sounds/slash.wav", Sound.class).play();
 
     }
     public void getHit(int damage, Vector2 eVelocity){
@@ -339,11 +349,18 @@ public class Link extends Sprite{
         Gdx.app.log(xUnit+"", yUnit+"");
         b2body.setLinearVelocity(0,0);
         b2body.setLinearVelocity(xUnit*20, yUnit*20);
-        if(health > damage)
-            health-=damage;
+        MyGame.manager.get("audio/sounds/get_hit.wav", Sound.class).play();
+        if(health > damage) {
+            health -= damage;
+            MyGame.manager.get("audio/sounds/get_hurt.wav", Sound.class).play();
+        }
         else{
             health = 0;
+            linkIsDead = true;
+            MyGame.manager.get("audio/sounds/die.wav", Sound.class).play();
         }
+
+
 
     }
     public int getHealth(){
@@ -362,14 +379,17 @@ public class Link extends Sprite{
         if(categoryBit == MyGame.INVINCIBILITY_BIT)
             filter.maskBits = MyGame.BORDER_BIT |
                     MyGame.BUSH_BIT |
-                    MyGame.OBSTACLE_BIT;
+                    MyGame.OBSTACLE_BIT|
+                    MyGame.TOWER_VISION_BIT|
+                    MyGame.DESTINATION_BIT;
         else
             filter.maskBits = MyGame.BORDER_BIT |
                     MyGame.BUSH_BIT |
                     MyGame.ENEMY_BIT|
                     MyGame.OBSTACLE_BIT|
                     MyGame.TOWER_VISION_BIT|
-                    MyGame.ARROW_BIT;
+                    MyGame.ARROW_BIT|
+                    MyGame.DESTINATION_BIT;
         for(Fixture fixture : b2body.getFixtureList()){
             fixture.setFilterData(filter);
         }
@@ -377,5 +397,18 @@ public class Link extends Sprite{
     public void setToSlash(int direction){
         setToSlash = direction;
     }
+    public boolean isDead(){
+        return linkIsDead;
+    }
+    public float getStateTimer(){
+        return stateTimer;
+    }
+    public void setToDie(){
+        linkIsDead = true;
+    }
+    public void setToWin(){
+        completed = true;
+    }
+
 
 }
