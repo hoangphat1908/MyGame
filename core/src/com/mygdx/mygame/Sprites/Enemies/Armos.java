@@ -60,14 +60,14 @@ public class Armos extends Enemy{
     public void update(float dt){
         stateTime +=dt;
 
-        if(setToDestroy && deathTimer > 0.4f){
-
+        if((setToDestroy && !destroyed&&deathTimer > 0.6f)){
+            world.destroyBody(b2body);
+            b2body = null;
             destroyed = true;
             stateTime = 0;
         }
         if(setToDestroy && !destroyed){
-            world.destroyBody(b2body);
-            b2body = null;
+
             deathTimer+=dt;
             setRegion(deathAnimation.getKeyFrame(deathTimer, false));
         }
