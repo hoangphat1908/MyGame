@@ -3,14 +3,7 @@ package com.mygdx.mygame.Tools;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Screens.PlayScreen;
 import com.mygdx.mygame.Sprites.Bush;
 import com.mygdx.mygame.Sprites.Destination;
@@ -31,7 +24,7 @@ public class B2WorldCreator {
     public  B2WorldCreator(PlayScreen screen){
         this.screen = screen;
         TiledMap map = screen.getMap();
-        //Border Trees and Obstacles
+        //Border Trees and Fences
         for(MapObject object: map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
             new Obstacle(screen, object);
         }

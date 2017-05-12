@@ -1,5 +1,6 @@
 package com.mygdx.mygame.Scenes;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -21,6 +22,7 @@ public class Hud implements Disposable{
     public Stage stage;
     private Viewport viewport;
     private boolean hasDied;
+    public AssetManager manager;
 
     private Integer worldTimer;
     private  float timeCount;
@@ -35,11 +37,12 @@ public class Hud implements Disposable{
     Label mapLabel;
     Label linkLabel;
 
-    public Hud(SpriteBatch sb){
+    public Hud(SpriteBatch sb, AssetManager manager){
         worldTimer = 160;
         timeCount = 0;
         health = 200;
         maxHealth = 200;
+        this.manager = manager;
 
         viewport = new FitViewport(MyGame.V_WIDTH, MyGame.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -71,13 +74,13 @@ public class Hud implements Disposable{
             else {
                 worldTimer = 0;
                 if(!hasDied) {
-                    MyGame.manager.get("audio/sounds/die.wav", Sound.class).play();
+                    manager.get("audio/sounds/die.wav", Sound.class).play();
                     hasDied = true;
                 }
             }
             countDownLabel.setText(String.format("%02d", worldTimer));
             if(worldTimer < 16 && worldTimer > 0){
-                MyGame.manager.get("audio/sounds/time.wav", Sound.class).play();
+                manager.get("audio/sounds/time.wav", Sound.class).play();
             }
             timeCount = 0;
         }

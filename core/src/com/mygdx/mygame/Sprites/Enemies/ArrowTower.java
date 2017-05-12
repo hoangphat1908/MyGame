@@ -2,6 +2,7 @@ package com.mygdx.mygame.Sprites.Enemies;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -163,7 +164,7 @@ public class ArrowTower extends Tower{
         }
 
         arrows.add(new Arrow(screen, positionX, positionY, direction));
-        MyGame.manager.get("audio/sounds/arrow_hit.wav", Sound.class).play();
+        manager.get("audio/sounds/arrow_hit.wav", Sound.class).play();
 
     }
     public void draw(Batch batch){

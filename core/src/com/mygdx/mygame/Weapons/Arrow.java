@@ -1,7 +1,7 @@
 package com.mygdx.mygame.Weapons;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Screens.PlayScreen;
 
@@ -27,12 +26,14 @@ public class Arrow extends Sprite {
     boolean setToDestroy;
     int direction;
     public Vector2 velocity;
+    public AssetManager manager;
 
     Body b2body;
     public Arrow(PlayScreen screen, float x, float y, int direction){
         this.direction = direction;
         this.screen = screen;
         this.world = screen.getWorld();
+        this.manager = screen.manager;
 
         switch (direction){
             case 0:
@@ -133,7 +134,7 @@ public class Arrow extends Sprite {
             world.destroyBody(b2body);
             b2body = null;
             destroyed = true;
-            MyGame.manager.get("audio/sounds/arrow_hit.wav", Sound.class).play();
+            manager.get("audio/sounds/arrow_hit.wav", Sound.class).play();
         }
     }
 

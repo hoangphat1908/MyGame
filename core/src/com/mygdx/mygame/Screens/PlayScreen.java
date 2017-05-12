@@ -2,6 +2,7 @@ package com.mygdx.mygame.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,9 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Scenes.Hud;
-import com.mygdx.mygame.Sprites.Enemies.Armos;
 import com.mygdx.mygame.Sprites.Enemies.Enemy;
-import com.mygdx.mygame.Sprites.Enemies.ArrowTower;
 import com.mygdx.mygame.Sprites.Enemies.Tower;
 import com.mygdx.mygame.Sprites.Link;
 import com.mygdx.mygame.Tools.B2WorldCreator;
@@ -42,24 +41,23 @@ public class PlayScreen implements Screen {
 
     //Box2d variables
     private World world;
-    private Box2DDebugRenderer b2dr;
+    //private Box2DDebugRenderer b2dr;
 
     private B2WorldCreator creator;
     private Link player;
+    public AssetManager manager;
     private Music music;
-
-
 
     public PlayScreen(MyGame game) {
         atlas = new TextureAtlas("link_and_enemies.atlas");
 
         this.game = game;
-
+        this.manager = game.manager;
         gameCam = new OrthographicCamera();
         //create a FitViewPort
         gamePort = new FitViewport(MyGame.V_WIDTH / MyGame.PPM, MyGame.V_HEIGHT / MyGame.PPM, gameCam);
         //create HUD
-        hud = new Hud(game.batch);
+        hud = new Hud(game.batch, this.manager);
         //Load map and renderer
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("map.tmx");
@@ -67,8 +65,8 @@ public class PlayScreen implements Screen {
         //set gameCam to be centered correctly at the start of the map
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         world = new World(new Vector2(0, 0), true);
-        b2dr = new Box2DDebugRenderer();
-        b2dr.SHAPE_STATIC.set(0, 0, 0, 1);
+        //b2dr = new Box2DDebugRenderer();
+        //b2dr.SHAPE_STATIC.set(1, 0, 0, 1);
 
 
         creator =new B2WorldCreator(this);
@@ -76,7 +74,7 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
-        music = MyGame.manager.get("audio/music/bg_music.mp3", Music.class);
+        music = manager.get("audio/music/bg_music.mp3", Music.class);
         music.setLooping(true);
         music.setVolume(0.2f);
         music.play();
@@ -123,7 +121,7 @@ public class PlayScreen implements Screen {
 
         renderer.render();
 
-        b2dr.render(world, gameCam.combined);
+        //b2dr.render(world, gameCam.combined);
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
@@ -147,7 +145,7 @@ public class PlayScreen implements Screen {
         }
         if(gameCompleted()){
             music.stop();
-            Music finishMusic = MyGame.manager.get("audio/music/finish_music.mp3", Music.class);
+            Music finishMusic = manager.get("audio/music/finish_music.mp3", Music.class);
             finishMusic.setVolume(0.2f);
             finishMusic.play();
             game.setScreen(new GameCompletedScreen(game));
@@ -199,7 +197,7 @@ public class PlayScreen implements Screen {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        b2dr.dispose();
+        //b2dr.dispose();
         hud.dispose();
     }
 }

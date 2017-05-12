@@ -2,6 +2,7 @@ package com.mygdx.mygame.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -60,9 +61,11 @@ public class Link extends Sprite{
     private int setToSlash=-1;
     private boolean linkIsDead;
     private boolean completed;
+    public AssetManager manager;
     public Link(PlayScreen screen){
         this.screen = screen;
         this.world = screen.getWorld();
+        this.manager = screen.manager;
         currentState = State.STANDING_NORTH;
         previousState = State.STANDING_NORTH;
         stateTimer = 0;
@@ -335,7 +338,7 @@ public class Link extends Sprite{
     }
     public void slash(int direction){
         sword = new Sword(screen, b2body.getPosition().x, b2body.getPosition().y, direction);
-        MyGame.manager.get("audio/sounds/slash.wav", Sound.class).play();
+        manager.get("audio/sounds/slash.wav", Sound.class).play();
 
     }
     public void getHit(int damage, Vector2 eVelocity){
@@ -345,15 +348,15 @@ public class Link extends Sprite{
         Gdx.app.log(xUnit+"", yUnit+"");
         b2body.setLinearVelocity(0,0);
         b2body.setLinearVelocity(xUnit*20, yUnit*20);
-        MyGame.manager.get("audio/sounds/get_hit.wav", Sound.class).play();
+        manager.get("audio/sounds/get_hit.wav", Sound.class).play();
         if(health > damage) {
             health -= damage;
-            MyGame.manager.get("audio/sounds/get_hurt.wav", Sound.class).play();
+            manager.get("audio/sounds/get_hurt.wav", Sound.class).play();
         }
         else{
             health = 0;
             linkIsDead = true;
-            MyGame.manager.get("audio/sounds/die.wav", Sound.class).play();
+            manager.get("audio/sounds/die.wav", Sound.class).play();
         }
 
 
@@ -387,9 +390,6 @@ public class Link extends Sprite{
     }
     public void setToSlash(int direction){
         setToSlash = direction;
-    }
-    public boolean isDead(){
-        return linkIsDead;
     }
     public float getStateTimer(){
         return stateTimer;

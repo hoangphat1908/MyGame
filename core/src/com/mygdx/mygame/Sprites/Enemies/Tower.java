@@ -1,5 +1,6 @@
 package com.mygdx.mygame.Sprites.Enemies;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -22,10 +23,12 @@ public abstract class Tower extends Sprite {
     protected PlayScreen screen;
     public Body b2body;
     protected MapObject object;
+    public AssetManager manager;
     public Tower(PlayScreen screen, MapObject object){
         this.world = screen.getWorld();
         this.screen = screen;
         this.object = object;
+        this.manager = screen.manager;
         Rectangle rect = ((RectangleMapObject) object).getRectangle();
         setPosition(rect.getX()/ MyGame.PPM, rect.getY()/MyGame.PPM);
     }

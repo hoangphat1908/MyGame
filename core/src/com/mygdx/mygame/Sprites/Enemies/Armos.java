@@ -1,5 +1,6 @@
 package com.mygdx.mygame.Sprites.Enemies;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -29,8 +30,10 @@ public class Armos extends Enemy{
     private boolean setToDestroy;
     private boolean destroyed;
     private float deathTimer;
+    public AssetManager manager;
     public Armos(PlayScreen screen, MapObject object) {
         super(screen, object);
+        this.manager = screen.manager;
         if(object.getProperties().containsKey("moving_north"))
             velocity = new Vector2(0,1);
         else if(object.getProperties().containsKey("moving_east"))
@@ -110,12 +113,12 @@ public class Armos extends Enemy{
     public void getHit(int damage){
         if(health > damage) {
             health -= damage;
-            MyGame.manager.get("audio/sounds/armos_get_hit.wav", Sound.class).play();
+            manager.get("audio/sounds/armos_get_hit.wav", Sound.class).play();
         }
         else{
             health = 0;
             setToDestroy = true;
-            MyGame.manager.get("audio/sounds/armos_die.wav", Sound.class).play();
+            manager.get("audio/sounds/armos_die.wav", Sound.class).play();
         }
 
     }

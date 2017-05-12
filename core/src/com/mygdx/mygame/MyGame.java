@@ -1,13 +1,9 @@
 package com.mygdx.mygame;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.mygame.Screens.PlayScreen;
 
@@ -19,20 +15,17 @@ public class MyGame extends Game {
 	public static final short DESTINATION_BIT = 1;
 	public static final short LINK_BIT = 2;
 	public static final short BUSH_BIT = 4;
-	public static final short DESTROYED_BIT = 8;
-	public static final short INVINCIBILITY_BIT = 16;
-	public static final short OBSTACLE_BIT = 32;
-	public static final short ENEMY_BIT = 64;
+    public static final short OBSTACLE_BIT = 8;
+	public static final short DESTROYED_BIT = 16;
+	public static final short INVINCIBILITY_BIT = 32;
+    public static final short ENEMY_BIT = 64;
 	public static final short ARROW_BIT = 128;
-	public static final short TOWER_VISION_BIT = 256;
-	public static final short SWORD_BIT = 512;
-
+	public static final short SWORD_BIT = 256;
+	public static final short TOWER_VISION_BIT = 512;
 
 	public SpriteBatch batch;
-	public static AssetManager manager;
+	public AssetManager manager;
 
-	Texture img;
-	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -53,8 +46,7 @@ public class MyGame extends Game {
 		manager.finishLoading();
 
 		setScreen(new PlayScreen(this));
-
-		}
+    }
 
 	@Override
 	public void render () {
