@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.mygame.MyGame;
@@ -46,7 +47,7 @@ public class Armos extends Enemy{
         frames.clear();
         for(int i = 10; i < 13; i++)
             frames.add(new TextureRegion(screen.getAtlas().findRegion("armos"), i*56, 0, 56, 56));
-        deathAnimation= new Animation<TextureRegion>(0.2f, frames);
+        deathAnimation= new Animation<TextureRegion>(0.1f, frames);
         stateTime = 0;
 
         setBounds(getX(), getY(), 56/MyGame.PPM, 56/MyGame.PPM);
@@ -60,7 +61,7 @@ public class Armos extends Enemy{
     public void update(float dt){
         stateTime +=dt;
 
-        if((setToDestroy && !destroyed&&deathTimer > 0.6f)){
+        if((setToDestroy && !destroyed&&deathTimer > 0.3f)){
             world.destroyBody(b2body);
             b2body = null;
             destroyed = true;

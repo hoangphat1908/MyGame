@@ -36,7 +36,7 @@ public class Hud implements Disposable{
     Label linkLabel;
 
     public Hud(SpriteBatch sb){
-        worldTimer = 240;
+        worldTimer = 160;
         timeCount = 0;
         health = 200;
         maxHealth = 200;
