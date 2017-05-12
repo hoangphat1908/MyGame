@@ -36,7 +36,7 @@ public class Hud implements Disposable{
     Label linkLabel;
 
     public Hud(SpriteBatch sb){
-        worldTimer = 120;
+        worldTimer = 240;
         timeCount = 0;
         health = 200;
         maxHealth = 200;
@@ -76,7 +76,7 @@ public class Hud implements Disposable{
                 }
             }
             countDownLabel.setText(String.format("%02d", worldTimer));
-            if(worldTimer < 5 && worldTimer > 0){
+            if(worldTimer < 16 && worldTimer > 0){
                 MyGame.manager.get("audio/sounds/time.wav", Sound.class).play();
             }
             timeCount = 0;

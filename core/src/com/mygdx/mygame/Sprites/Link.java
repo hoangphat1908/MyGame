@@ -142,14 +142,14 @@ public class Link extends Sprite{
         //&& b2body.getLinearVelocity().x <= 2
         if((!isHit||invTimer>1)&&currentState!=State.DEAD&&currentState!=State.COMPLETE) {
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-                b2body.setLinearVelocity(new Vector2(-2f, 0));
+                b2body.setLinearVelocity(new Vector2(-1.3f, 0));
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                b2body.setLinearVelocity(new Vector2(2f, 0));
+                b2body.setLinearVelocity(new Vector2(1.3f, 0));
             }
             if (Gdx.input.isKeyPressed(Input.Keys.UP))
-                b2body.setLinearVelocity(new Vector2(0, 2f));
+                b2body.setLinearVelocity(new Vector2(0, 1.3f));
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-                b2body.setLinearVelocity(new Vector2(0, -2f));
+                b2body.setLinearVelocity(new Vector2(0, -1.3f));
         }
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
