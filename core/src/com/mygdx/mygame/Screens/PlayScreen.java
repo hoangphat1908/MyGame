@@ -11,12 +11,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.mygame.MyGame;
-import com.mygdx.mygame.Scenes.Hud;
+import com.mygdx.mygame.Scenes.HUD;
 import com.mygdx.mygame.Sprites.Enemies.Enemy;
 import com.mygdx.mygame.Sprites.Enemies.Tower;
 import com.mygdx.mygame.Sprites.Link;
@@ -32,7 +31,7 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlas;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
-    private Hud hud;
+    private HUD hud;
 
     //Tiled map variables
     private TmxMapLoader mapLoader;
@@ -57,7 +56,7 @@ public class PlayScreen implements Screen {
         //create a FitViewPort
         gamePort = new FitViewport(MyGame.V_WIDTH / MyGame.PPM, MyGame.V_HEIGHT / MyGame.PPM, gameCam);
         //create HUD
-        hud = new Hud(game.batch, this.manager);
+        hud = new HUD(game.batch, this.manager);
         //Load map and renderer
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("map.tmx");

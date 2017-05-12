@@ -18,7 +18,7 @@ import com.mygdx.mygame.MyGame;
  * Created by hoangphat1908 on 4/16/2017.
  */
 
-public class Hud implements Disposable{
+public class HUD implements Disposable{
     public Stage stage;
     private Viewport viewport;
     private boolean hasDied;
@@ -37,7 +37,7 @@ public class Hud implements Disposable{
     Label mapLabel;
     Label linkLabel;
 
-    public Hud(SpriteBatch sb, AssetManager manager){
+    public HUD(SpriteBatch sb, AssetManager manager){
         worldTimer = 160;
         timeCount = 0;
         health = 200;
