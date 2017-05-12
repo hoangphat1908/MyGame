@@ -55,7 +55,6 @@ public class Link extends Sprite{
     private PlayScreen screen;
     private Sword sword;
     private int health;
-    private int maxHealth;
     private boolean isHit;
     private float invTimer;
     private int setToSlash=-1;
@@ -133,7 +132,6 @@ public class Link extends Sprite{
         currentRegion = linkStandNorth;
         setBounds(0, 0, 48 / MyGame.PPM, 48 / MyGame.PPM);
         setRegion(linkStandNorth);
-        maxHealth = 200;
         health = 200;
         isHit = false;
         invTimer = 0;
@@ -156,8 +154,6 @@ public class Link extends Sprite{
 
         if(isHit){
             setCategoryFilter(MyGame.INVINCIBILITY_BIT);
-            //Gdx.app.log("time",invTimer+"");
-            //Gdx.app.log("state", isHit+"");
             invTimer+=dt;
             if(invTimer<.6) {
                 if (b2body.getLinearVelocity().x > 0)
