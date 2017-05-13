@@ -30,10 +30,8 @@ public class Armos extends Enemy{
     private boolean setToDestroy;
     private boolean destroyed;
     private float deathTimer;
-    public AssetManager manager;
     public Armos(PlayScreen screen, MapObject object) {
         super(screen, object);
-        this.manager = screen.manager;
         if(object.getProperties().containsKey("moving_north"))
             velocity = new Vector2(0,1);
         else if(object.getProperties().containsKey("moving_east"))
@@ -57,7 +55,7 @@ public class Armos extends Enemy{
         setToDestroy = false;
         destroyed = false;
         deathTimer = -1/60f;
-        defineEnemy();
+
     }
 
     @Override

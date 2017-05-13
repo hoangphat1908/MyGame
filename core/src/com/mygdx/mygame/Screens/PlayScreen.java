@@ -71,7 +71,7 @@ public class PlayScreen implements Screen {
         creator =new B2WorldCreator(this);
         player = new Link(this);
 
-        world.setContactListener(new WorldContactListener());
+        world.setContactListener(WorldContactListener.getInstance());
 
         music = manager.get("audio/music/bg_music.mp3", Music.class);
         music.setLooping(true);
@@ -85,13 +85,7 @@ public class PlayScreen implements Screen {
     public void show() {
 
     }
-    public void handleInput(float dt){
-
-
-    }
     public void update(float dt){
-        handleInput(dt);
-
         world.step(1/60f, 6, 2);
         player.update(dt);
         hud.update(dt);
@@ -106,8 +100,8 @@ public class PlayScreen implements Screen {
         }
         for(Tower enemy : creator.getTowers() )
             enemy.update(dt);
-        gameCam.position.x = player.b2body.getPosition().x;
-        gameCam.position.y = player.b2body.getPosition().y;
+        gameCam.position.x = player.getB2body().getPosition().x;
+        gameCam.position.y = player.getB2body().getPosition().y;
         gameCam.update();
         renderer.setView(gameCam);
     }
@@ -147,7 +141,7 @@ public class PlayScreen implements Screen {
             Music finishMusic = manager.get("audio/music/finish_music.mp3", Music.class);
             finishMusic.setVolume(0.2f);
             finishMusic.play();
-            game.setScreen(new GameCompletedScreen(game));
+            game.setScreen(new GameCompletedScreen(game,(hud.getMaxTime() - hud.getTimer())));
             dispose();
         }
     }
@@ -157,7 +151,7 @@ public class PlayScreen implements Screen {
      * @return game is over
      */
     public boolean gameOver(){
-        if(player.currentState == Link.State.DEAD&&player.getStateTimer() > 1.5){
+        if(player.getCurrentState() == Link.State.DEAD&&player.getStateTimer() > 1.5){
 
             return true;
         }
@@ -169,7 +163,7 @@ public class PlayScreen implements Screen {
      * @return game is completed
      */
     public boolean gameCompleted(){
-        if(player.currentState == Link.State.COMPLETE&&player.getStateTimer() > .5){
+        if(player.getCurrentState() == Link.State.COMPLETE&&player.getStateTimer() > .5){
             return true;
         }
         return false;

@@ -24,7 +24,6 @@ public class Bush extends  InteractiveTileObject {
         fixture.setUserData(this);
         setCategoryFilter(MyGame.BUSH_BIT);
     }
-
     @Override
     public void onSlash() {
         setCategoryFilter(MyGame.DESTROYED_BIT);

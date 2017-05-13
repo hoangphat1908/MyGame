@@ -21,7 +21,7 @@ import com.mygdx.mygame.Screens.PlayScreen;
 public abstract class Tower extends Sprite {
     protected World world;
     protected PlayScreen screen;
-    public Body b2body;
+    protected Body b2body;
     protected MapObject object;
     public AssetManager manager;
     public Tower(PlayScreen screen, MapObject object){

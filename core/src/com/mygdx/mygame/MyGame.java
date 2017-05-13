@@ -1,11 +1,14 @@
 package com.mygdx.mygame;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.mygame.Screens.PlayScreen;
+
+import java.util.Set;
 
 public class MyGame extends Game {
 	public static final int V_WIDTH = 320;

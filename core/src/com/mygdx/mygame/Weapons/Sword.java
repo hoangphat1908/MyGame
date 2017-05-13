@@ -14,13 +14,13 @@ import com.mygdx.mygame.Screens.PlayScreen;
  */
 
 public class Sword extends Sprite {
-    PlayScreen screen;
-    World world;
-    float stateTime;
-    boolean destroyed;
-    boolean setToDestroy;
-    int direction;
-    Body b2body;
+    private PlayScreen screen;
+    private World world;
+    private float stateTime;
+    private boolean destroyed;
+    private boolean setToDestroy;
+    private int direction;
+    private Body b2body;
     public Sword(PlayScreen screen, float x, float y, int direction){
         this.screen = screen;
         this.world = screen.getWorld();

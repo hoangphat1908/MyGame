@@ -23,7 +23,7 @@ public class HUD implements Disposable{
     private Viewport viewport;
     private boolean hasDied;
     public AssetManager manager;
-
+    private Integer maxTime;
     private Integer worldTimer;
     private  float timeCount;
     private Integer health;
@@ -39,6 +39,7 @@ public class HUD implements Disposable{
 
     public HUD(SpriteBatch sb, AssetManager manager){
         worldTimer = 160;
+        maxTime = 160;
         timeCount = 0;
         health = 200;
         maxHealth = 200;
@@ -90,15 +91,14 @@ public class HUD implements Disposable{
     public void dispose() {
         stage.dispose();
     }
-    public void setMaxHealth(int maxHealth){
-        this.maxHealth = maxHealth;
-        healthLabel.setText(String.format("%03d/%03d", health, maxHealth));
-    }
     public void setHealth(int health){
         this.health = health;
         healthLabel.setText(String.format("%03d/%03d", health, maxHealth));
     }
     public int getTimer(){
         return worldTimer;
+    }
+    public int getMaxTime(){
+        return maxTime;
     }
 }

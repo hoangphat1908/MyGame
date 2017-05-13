@@ -18,6 +18,11 @@ import com.mygdx.mygame.Weapons.Sword;
  */
 
 public class WorldContactListener implements ContactListener{
+    private static WorldContactListener contactListener = new WorldContactListener();
+    private WorldContactListener(){};
+    public static WorldContactListener getInstance(){
+        return contactListener;
+    }
     @Override
     public void beginContact(Contact contact) {
 
@@ -78,10 +83,10 @@ public class WorldContactListener implements ContactListener{
                 break;
             case MyGame.LINK_BIT | MyGame.ENEMY_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.LINK_BIT) {
-                    ((Link) fixA.getUserData()).getHit(30, ((Enemy)fixB.getUserData()).velocity);
+                    ((Link) fixA.getUserData()).getHit(30, ((Enemy)fixB.getUserData()).getVelocity());
                 }
                 else {
-                    ((Link) fixB.getUserData()).getHit(30, ((Enemy)fixA.getUserData()).velocity);
+                    ((Link) fixB.getUserData()).getHit(30, ((Enemy)fixA.getUserData()).getVelocity());
                 }
                 break;
             case MyGame.ARROW_BIT | MyGame.ENEMY_BIT:
@@ -97,11 +102,11 @@ public class WorldContactListener implements ContactListener{
             case MyGame.ARROW_BIT | MyGame.LINK_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.ARROW_BIT) {
                     ((Arrow) fixA.getUserData()).setToDestroy();
-                    ((Link) fixB.getUserData()).getHit(30, ((Arrow)fixA.getUserData()).velocity);
+                    ((Link) fixB.getUserData()).getHit(40, ((Arrow)fixA.getUserData()).getVelocity());
                 }
                 else {
                     ((Arrow) fixB.getUserData()).setToDestroy();
-                    ((Link) fixA.getUserData()).getHit(30, ((Arrow)fixB.getUserData()).velocity);
+                    ((Link) fixA.getUserData()).getHit(40, ((Arrow)fixB.getUserData()).getVelocity());
                 }
                 break;
         }

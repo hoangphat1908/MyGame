@@ -18,17 +18,17 @@ import com.mygdx.mygame.Screens.PlayScreen;
  */
 public class Arrow extends Sprite {
 
-    PlayScreen screen;
-    World world;
-    TextureRegion arrowTexture;
-    float stateTime;
-    boolean destroyed;
-    boolean setToDestroy;
-    int direction;
-    public Vector2 velocity;
+    private PlayScreen screen;
+    private World world;
+    private TextureRegion arrowTexture;
+    private float stateTime;
+    private boolean destroyed;
+    private boolean setToDestroy;
+    private int direction;
+    private  Vector2 velocity;
     public AssetManager manager;
 
-    Body b2body;
+    private Body b2body;
     public Arrow(PlayScreen screen, float x, float y, int direction){
         this.direction = direction;
         this.screen = screen;
@@ -54,7 +54,6 @@ public class Arrow extends Sprite {
         setBounds(x, y, 6 / MyGame.PPM, 6 / MyGame.PPM);
         defineArrow();
     }
-
     /**
      * Define the body of the arrow
      */
@@ -129,7 +128,6 @@ public class Arrow extends Sprite {
             b2body.createFixture(fdef).setUserData(this);
             b2body.setLinearVelocity(velocity);
     }
-
     public void update(float dt){
         stateTime += dt;
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
@@ -140,14 +138,13 @@ public class Arrow extends Sprite {
             manager.get("audio/sounds/arrow_hit.wav", Sound.class).play();
         }
     }
-
     public void setToDestroy(){
         setToDestroy = true;
     }
-
     public boolean isDestroyed(){
         return destroyed;
     }
-
-
+    public Vector2 getVelocity(){
+        return velocity;
+    }
 }

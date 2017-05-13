@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -21,20 +24,17 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.mygame.MyGame;
 import com.mygdx.mygame.Screens.PlayScreen;
 import com.mygdx.mygame.Weapons.Sword;
-
 /**
  * Created by hoangphat1908 on 4/16/2017.
  */
 
 public class Link extends Sprite{
-
-
     public enum State {STANDING_NORTH, STANDING_EAST, STANDING_SOUTH, STANDING_WEST, WALKING_NORTH, WALKING_EAST, WALKING_SOUTH, WALKING_WEST, SLASHING_NORTH, SLASHING_EAST, SLASHING_SOUTH, SLASHING_WEST, DEAD, COMPLETE};
-    public State currentState;
-    public State previousState;
-    public TextureRegion currentRegion;
-    public World world;
-    public Body b2body;
+    private State currentState;
+    private State previousState;
+    private TextureRegion currentRegion;
+    private World world;
+    private Body b2body;
     private TextureRegion linkStandNorth;
     private TextureRegion linkStandEast;
     private TextureRegion linkStandSouth;
@@ -60,11 +60,15 @@ public class Link extends Sprite{
     private int setToSlash=-1;
     private boolean linkIsDead;
     private boolean completed;
+    private MapObject object;
+    private Rectangle bounds;
     public AssetManager manager;
     public Link(PlayScreen screen){
         this.screen = screen;
         this.world = screen.getWorld();
         this.manager = screen.manager;
+        object = screen.getMap().getLayers().get(4).getObjects().getByType(RectangleMapObject.class).get(0);
+        this.bounds = ((RectangleMapObject) object).getRectangle();
         currentState = State.STANDING_NORTH;
         previousState = State.STANDING_NORTH;
         stateTimer = 0;
@@ -135,6 +139,7 @@ public class Link extends Sprite{
         health = 200;
         isHit = false;
         invTimer = 0;
+
     }
     public void update(float dt){
         //&& b2body.getLinearVelocity().x <= 2
@@ -308,20 +313,18 @@ public class Link extends Sprite{
             return previousState;
 
     }
-
     /**
      * Define the body of the player
      */
     public void defineLink(){
         BodyDef bdef = new BodyDef();
-        bdef.position.set((9*8+5) / MyGame.PPM, (11*8+5) /MyGame.PPM);
+        bdef.position.set((bounds.getX()+bounds.getWidth() /2) / MyGame.PPM, (bounds.getY() + bounds.getHeight() / 2) / MyGame.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
         b2body.setLinearDamping(30.0f);
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(11 / MyGame.PPM);
-
         fdef.filter.categoryBits = MyGame.LINK_BIT;
         fdef.filter.maskBits = MyGame.BUSH_BIT |
                 MyGame.ENEMY_BIT |
@@ -334,7 +337,6 @@ public class Link extends Sprite{
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }
-
     /**
      * Create a sword slash in front of the player
      * @param direction direction the player is facing
@@ -344,7 +346,6 @@ public class Link extends Sprite{
         manager.get("audio/sounds/slash.wav", Sound.class).play();
 
     }
-
     /**
      * Action when the enemy get hit
      * @param damage amount of damage
@@ -354,7 +355,6 @@ public class Link extends Sprite{
         isHit = true;
         float xUnit = eVelocity.x !=0 ?eVelocity.x / Math.abs(eVelocity.x) : 0;
         float yUnit = eVelocity.y !=0 ?eVelocity.y / Math.abs(eVelocity.y) : 0;
-        Gdx.app.log(xUnit+"", yUnit+"");
         b2body.setLinearVelocity(0,0);
         b2body.setLinearVelocity(xUnit*20, yUnit*20);
         manager.get("audio/sounds/get_hit.wav", Sound.class).play();
@@ -368,18 +368,13 @@ public class Link extends Sprite{
             manager.get("audio/sounds/die.wav", Sound.class).play();
         }
     }
-
     /**
      * Get the current health
      * @return currenthealth
      */
-    public int getHealth(){
-        return health;
-    }
     public void draw(Batch batch){
             super.draw(batch);
     }
-
     public void setCategoryFilter(short categoryBit){
         Filter filter = new Filter();
         filter.categoryBits = categoryBit;
@@ -399,11 +394,12 @@ public class Link extends Sprite{
             fixture.setFilterData(filter);
         }
     }
+    /**
+     * Slash in the given direction
+     * @param direction North: 0, East: 1, South: 2, West: 3
+     */
     public void setToSlash(int direction){
         setToSlash = direction;
-    }
-    public float getStateTimer(){
-        return stateTimer;
     }
     public void setToDie(){
         linkIsDead = true;
@@ -411,6 +407,16 @@ public class Link extends Sprite{
     public void setToWin(){
         completed = true;
     }
-
-
+    public State getCurrentState(){
+        return currentState;
+    }
+    public float getStateTimer(){
+        return stateTimer;
+    }
+    public Body getB2body(){
+        return b2body;
+    }
+    public int getHealth(){
+        return health;
+    }
 }
